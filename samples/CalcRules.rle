@@ -1,0 +1,22 @@
+'==============================================================================
+' Arquivo de Regras HFM - Exemplo Sub Calculate
+' Encoding: ASCII/Unicode (Little Endian) | Extensao: .RLE | Linguagem: VBScript
+' Fonte da sintaxe: Oracle HFM 11.2 Rules Guide (Creating Rules Files)
+'==============================================================================
+
+Sub Calculate()
+
+    ' --- Exemplo 1: Calculo de margem bruta (Gross Margin) ---
+    ' GrossMargin = Sales - COGS
+    HS.Exp "A#GrossMargin = A#Sales - A#COGS"
+
+    ' --- Exemplo 2: Calculo de indice (Gross Margin %) apenas quando Sales <> 0 ---
+    ' Evita divisao por zero lendo o valor de Sales antes de calcular.
+    dSales = HS.GetCell("A#Sales")
+    If dSales <> 0 Then
+        HS.Exp "A#GrossMarginPct = (A#Sales - A#COGS) / A#Sales * 100"
+    Else
+        HS.Clear "A#GrossMarginPct"
+    End If
+
+End Sub

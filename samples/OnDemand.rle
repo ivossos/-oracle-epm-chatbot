@@ -1,0 +1,14 @@
+'==============================================================================
+' Arquivo de Regras HFM - Exemplo Sub OnDemand
+' Executa um subconjunto de calculos a partir de um Data Form.
+' Observacao: diferente de Sub Calculate, dados ja gravados em pontos
+' IsCalculated NAO sao limpos quando a regra OnDemand roda.
+' Fonte: Oracle HFM 11.2 Rules Guide (Creating Rules Files)
+'==============================================================================
+
+Sub OnDemand_Calculation
+
+    HS.Exp "A#CogsTP=15424"
+    HS.Exp "A#Admex=32452"
+
+End Sub
