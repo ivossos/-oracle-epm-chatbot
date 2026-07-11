@@ -1,0 +1,7 @@
+.DS_Store
+.hermes/
+out/*.html
+out/*.json
+__pycache__/
+*.pyc
+.pytest_cache/
