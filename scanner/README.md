@@ -14,6 +14,12 @@ python3 -m scanner.web --port 9000 --no-open
 Arraste os `.rle`/`.vbs` na área indicada → **Analisar** → o relatório branded
 aparece na própria página, com botão para baixar o HTML (imprimir → PDF).
 
+Duas abas:
+- **📁 Arquivos** — arrastar e soltar um ou vários arquivos.
+- **✏️ Editor** — colar/editar uma regra e analisar ao vivo (com numeração de
+  linha e botão "Carregar exemplo"). Ideal para demonstrar um achado
+  aparecendo/sumindo conforme a regra é ajustada.
+
 ## CLI
 
 ```bash

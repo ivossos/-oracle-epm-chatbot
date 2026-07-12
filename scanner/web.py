@@ -26,6 +26,17 @@ INK = "#171717"
 LARANJA = "#E9560C"
 OFF_WHITE = "#F5F5F5"
 
+_EDITOR_SAMPLE = """Sub Calculate()
+    ' Cole ou edite sua regra HFM aqui e clique em Analisar.
+    HS.Exp "A#GrossMargin = A#Sales - A#COGS"
+
+    ' Exemplo de divisao SEM protecao (dispara HFM003 - critico):
+    HS.Exp "A#Margem = A#Lucro / A#Receita"
+End Sub"""
+
+# String literal JS seguro (aspas e quebras de linha escapadas).
+_EDITOR_SAMPLE_JS = json.dumps(_EDITOR_SAMPLE)
+
 _INDEX = f"""<!DOCTYPE html>
 <html lang="pt-BR"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -39,6 +50,12 @@ _INDEX = f"""<!DOCTYPE html>
   header h1 {{ margin: 0; font-size: 20px; }}
   header .sub {{ opacity: .75; font-size: 13px; margin-top: 4px; }}
   .wrap {{ max-width: 960px; margin: 0 auto; padding: 32px 40px; }}
+  .tabs {{ display: flex; gap: 4px; margin-bottom: 18px; }}
+  .tab {{ background: #eee; color: #555; border: 0; border-radius: 8px 8px 0 0;
+         padding: 10px 22px; font-size: 14px; font-weight: 600; cursor: pointer; }}
+  .tab.active {{ background: #fff; color: {INK}; box-shadow: 0 -2px 0 {LARANJA} inset; }}
+  .pane {{ display: none; }}
+  .pane.active {{ display: block; }}
   #drop {{ border: 3px dashed #ccc; border-radius: 14px; padding: 54px 20px;
           text-align: center; background: #fff; transition: .15s; cursor: pointer; }}
   #drop.hot {{ border-color: {LARANJA}; background: #fff7f2; }}
@@ -47,10 +64,23 @@ _INDEX = f"""<!DOCTYPE html>
   #files {{ margin: 18px 0; font-size: 13px; color: #444; }}
   #files span {{ display: inline-block; background: #fff; border: 1px solid #eee;
                 border-radius: 8px; padding: 4px 10px; margin: 3px; }}
+  .ed-name {{ font-family: SFMono-Regular, Consolas, monospace; font-size: 13px;
+             border: 1px solid #ddd; border-radius: 8px; padding: 8px 10px;
+             width: 240px; margin-bottom: 10px; }}
+  .editor-shell {{ position: relative; border: 1px solid #ddd; border-radius: 10px;
+                  overflow: hidden; background: #fff; display: flex; }}
+  #gutter {{ background: #fafafa; color: #aaa; text-align: right; padding: 14px 8px;
+            font-family: SFMono-Regular, Consolas, monospace; font-size: 13px;
+            line-height: 1.5; user-select: none; white-space: pre; border-right: 1px solid #eee; }}
+  #code {{ flex: 1; border: 0; outline: 0; resize: vertical; min-height: 300px;
+          padding: 14px 12px; font-family: SFMono-Regular, Consolas, monospace;
+          font-size: 13px; line-height: 1.5; tab-size: 4; color: {INK}; }}
   button {{ background: {LARANJA}; color: #fff; border: 0; border-radius: 8px;
            padding: 12px 26px; font-size: 15px; font-weight: 600; cursor: pointer; }}
+  button.ghost {{ background: #fff; color: {LARANJA}; border: 1px solid {LARANJA};
+                 padding: 11px 18px; font-size: 13px; }}
   button:disabled {{ background: #ccc; cursor: default; }}
-  .bar {{ display: flex; gap: 12px; align-items: center; margin-top: 8px; }}
+  .bar {{ display: flex; gap: 12px; align-items: center; margin-top: 12px; flex-wrap: wrap; }}
   #err {{ color: #C00000; font-size: 13px; margin-top: 10px; }}
   iframe {{ width: 100%; height: 78vh; border: 1px solid #ddd; border-radius: 10px;
            margin-top: 24px; background: #fff; }}
@@ -64,14 +94,39 @@ _INDEX = f"""<!DOCTYPE html>
    v{__version__} · os arquivos não saem da máquina</div>
 </header>
 <div class="wrap">
-  <div id="drop">
-    <div class="big">Arraste arquivos .rle / .vbs aqui</div>
-    <div class="small">ou clique para selecionar · processamento 100% local</div>
-    <input id="picker" type="file" multiple accept=".rle,.vbs" class="hidden">
+  <div class="tabs">
+    <button class="tab active" data-pane="p-files">📁 Arquivos</button>
+    <button class="tab" data-pane="p-editor">✏️ Editor</button>
   </div>
-  <div id="files"></div>
+
+  <div id="p-files" class="pane active">
+    <div id="drop">
+      <div class="big">Arraste arquivos .rle / .vbs aqui</div>
+      <div class="small">ou clique para selecionar · processamento 100% local</div>
+      <input id="picker" type="file" multiple accept=".rle,.vbs" class="hidden">
+    </div>
+    <div id="files"></div>
+    <div class="bar">
+      <button id="run" disabled>Analisar</button>
+    </div>
+  </div>
+
+  <div id="p-editor" class="pane">
+    <input id="ed-name" class="ed-name" value="editor.rle"
+           title="Nome do arquivo lógico usado no relatório">
+    <div class="editor-shell">
+      <div id="gutter">1</div>
+      <textarea id="code" spellcheck="false"
+        placeholder="Cole ou digite a regra HFM (VBScript) aqui…"></textarea>
+    </div>
+    <div class="bar">
+      <button id="run-ed">Analisar</button>
+      <button id="load-sample" class="ghost" type="button">Carregar exemplo</button>
+      <button id="clear-ed" class="ghost" type="button">Limpar</button>
+    </div>
+  </div>
+
   <div class="bar">
-    <button id="run" disabled>Analisar</button>
     <span id="status" class="small"></span>
     <a id="dl" class="badge hidden" download="hfm-report.html">⬇ baixar relatório</a>
   </div>
@@ -79,16 +134,53 @@ _INDEX = f"""<!DOCTYPE html>
   <iframe id="out" class="hidden" title="Relatório"></iframe>
 </div>
 <script>
-  const drop = document.getElementById('drop');
-  const picker = document.getElementById('picker');
-  const filesDiv = document.getElementById('files');
-  const runBtn = document.getElementById('run');
-  const statusEl = document.getElementById('status');
-  const errEl = document.getElementById('err');
-  const out = document.getElementById('out');
-  const dl = document.getElementById('dl');
+  const $ = id => document.getElementById(id);
+  const drop = $('drop'), picker = $('picker'), filesDiv = $('files');
+  const runBtn = $('run'), runEd = $('run-ed');
+  const statusEl = $('status'), errEl = $('err'), out = $('out'), dl = $('dl');
+  const code = $('code'), gutter = $('gutter'), edName = $('ed-name');
+  const SAMPLE = {_EDITOR_SAMPLE_JS};
   let picked = [];
 
+  // ---- Tabs ----
+  document.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => {{
+    document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+    document.querySelectorAll('.pane').forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+    $(t.dataset.pane).classList.add('active');
+  }}));
+
+  // ---- Editor gutter (line numbers) ----
+  function syncGutter() {{
+    const n = code.value.split('\\n').length || 1;
+    let s = ''; for (let i = 1; i <= n; i++) s += i + '\\n';
+    gutter.textContent = s.trimEnd();
+  }}
+  code.addEventListener('input', syncGutter);
+  code.addEventListener('scroll', () => {{ gutter.scrollTop = code.scrollTop; }});
+  $('load-sample').addEventListener('click', () => {{ code.value = SAMPLE; syncGutter(); }});
+  $('clear-ed').addEventListener('click', () => {{ code.value = ''; syncGutter(); }});
+  syncGutter();
+
+  // ---- Shared scan call ----
+  async function runScan(sources, label) {{
+    statusEl.textContent = 'Analisando…'; errEl.textContent = '';
+    try {{
+      const resp = await fetch('/scan', {{
+        method: 'POST', headers: {{'Content-Type':'application/json'}},
+        body: JSON.stringify({{ files: sources }}) }});
+      if (!resp.ok) throw new Error('HTTP ' + resp.status + ' — ' + (await resp.text()));
+      const html = await resp.text();
+      out.srcdoc = html; out.classList.remove('hidden');
+      const blob = new Blob([html], {{type:'text/html'}});
+      dl.href = URL.createObjectURL(blob); dl.classList.remove('hidden');
+      statusEl.textContent = 'Concluído.';
+    }} catch (e) {{
+      errEl.textContent = 'Erro: ' + e.message; statusEl.textContent = '';
+    }}
+  }}
+
+  // ---- Files pane ----
   function show() {{
     filesDiv.innerHTML = picked.map(f => '<span>'+f.name+'</span>').join('');
     runBtn.disabled = picked.length === 0;
@@ -108,23 +200,23 @@ _INDEX = f"""<!DOCTYPE html>
   drop.addEventListener('drop', e => accept(e.dataTransfer.files));
 
   runBtn.addEventListener('click', async () => {{
-    runBtn.disabled = true; statusEl.textContent = 'Lendo arquivos…'; errEl.textContent='';
+    runBtn.disabled = true; statusEl.textContent = 'Lendo arquivos…';
     try {{
       const sources = await Promise.all(picked.map(f =>
         f.text().then(t => ({{ name: f.name, text: t }}))));
-      statusEl.textContent = 'Analisando…';
-      const resp = await fetch('/scan', {{
-        method: 'POST', headers: {{'Content-Type':'application/json'}},
-        body: JSON.stringify({{ files: sources }}) }});
-      if (!resp.ok) throw new Error('HTTP '+resp.status);
-      const html = await resp.text();
-      out.srcdoc = html; out.classList.remove('hidden');
-      const blob = new Blob([html], {{type:'text/html'}});
-      dl.href = URL.createObjectURL(blob); dl.classList.remove('hidden');
-      statusEl.textContent = 'Concluído.';
-    }} catch (e) {{
-      errEl.textContent = 'Erro: ' + e.message; statusEl.textContent = '';
+      await runScan(sources);
     }} finally {{ runBtn.disabled = false; }}
+  }});
+
+  // ---- Editor pane ----
+  runEd.addEventListener('click', async () => {{
+    const text = code.value;
+    if (!text.trim()) {{ errEl.textContent = 'Editor vazio.'; return; }}
+    let name = (edName.value || 'editor.rle').trim();
+    if (!/\\.(rle|vbs)$/i.test(name)) name += '.rle';
+    runEd.disabled = true;
+    try {{ await runScan([{{ name, text }}]); }}
+    finally {{ runEd.disabled = false; }}
   }});
 </script>
 </body></html>"""
