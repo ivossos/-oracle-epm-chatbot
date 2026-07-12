@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="pt-BR"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HFM Rules Scanner — EPM Copilot</title>
+<style>
+  :root { --ink:#171717; --laranja:#E9560C; --off:#F5F5F5; --verde:#006100; }
+  * { box-sizing: border-box; }
+  body { font-family:-apple-system,Segoe UI,Roboto,sans-serif; color:var(--ink);
+         background:var(--off); margin:0; padding:0 0 60px; }
+  header { background:var(--ink); color:#fff; padding:24px 40px; border-bottom:5px solid var(--laranja); }
+  header h1 { margin:0; font-size:20px; }
+  header .sub { opacity:.75; font-size:13px; margin-top:4px; }
+  .wrap { max-width:960px; margin:0 auto; padding:28px 40px; }
+  .tabs { display:flex; gap:4px; margin-bottom:18px; }
+  .tab { background:#eee; color:#555; border:0; border-radius:8px 8px 0 0; padding:10px 22px;
+        font-size:14px; font-weight:600; cursor:pointer; }
+  .tab.active { background:#fff; color:var(--ink); box-shadow:0 -2px 0 var(--laranja) inset; }
+  .pane { display:none; } .pane.active { display:block; }
+  #drop { border:3px dashed #ccc; border-radius:14px; padding:54px 20px; text-align:center;
+         background:#fff; transition:.15s; cursor:pointer; }
+  #drop.hot { border-color:var(--laranja); background:#fff7f2; }
+  #drop .big { font-size:17px; font-weight:600; } #drop .small { color:#888; font-size:13px; margin-top:6px; }
+  #files { margin:18px 0; font-size:13px; } #files span { display:inline-block; background:#fff;
+    border:1px solid #eee; border-radius:8px; padding:4px 10px; margin:3px; }
+  .ed-name { font-family:SFMono-Regular,Consolas,monospace; font-size:13px; border:1px solid #ddd;
+    border-radius:8px; padding:8px 10px; width:240px; margin-bottom:10px; }
+  .editor-shell { border:1px solid #ddd; border-radius:10px; overflow:hidden; background:#fff; display:flex; }
+  #gutter { background:#fafafa; color:#aaa; text-align:right; padding:14px 8px;
+    font-family:SFMono-Regular,Consolas,monospace; font-size:13px; line-height:1.5;
+    user-select:none; white-space:pre; border-right:1px solid #eee; }
+  .code-wrap { position:relative; flex:1; min-height:300px; }
+  #hl,#code { margin:0; padding:14px 12px; font-family:SFMono-Regular,Consolas,monospace;
+    font-size:13px; line-height:1.5; tab-size:4; white-space:pre-wrap; word-break:break-word; border:0; }
+  #hl { position:absolute; inset:0; overflow:hidden; pointer-events:none; color:var(--ink); }
+  #code { position:absolute; inset:0; width:100%; height:100%; resize:vertical; outline:0;
+    background:transparent; color:transparent; caret-color:var(--ink); }
+  .hl-kw{color:#0b53c1;font-weight:600;} .hl-hs{color:var(--laranja);font-weight:600;}
+  .hl-mem{color:#7a1fa2;} .hl-str{color:#0a7f2e;} .hl-com{color:#999;font-style:italic;} .hl-num{color:#b5330a;}
+  button { background:var(--laranja); color:#fff; border:0; border-radius:8px; padding:12px 26px;
+    font-size:15px; font-weight:600; cursor:pointer; }
+  button.ghost { background:#fff; color:var(--laranja); border:1px solid var(--laranja); padding:11px 18px; font-size:13px; }
+  button:disabled { background:#ccc; cursor:default; }
+  .bar { display:flex; gap:12px; align-items:center; margin-top:12px; flex-wrap:wrap; }
+  #err { color:#C00000; font-size:13px; margin-top:10px; }
+  #out { margin-top:24px; }
+  .hidden { display:none; }
+  a.badge { color:var(--laranja); font-size:13px; text-decoration:none; margin-left:12px; cursor:pointer; }
+  /* Report */
+  .cards { display:flex; gap:12px; margin:0 0 20px; flex-wrap:wrap; }
+  .card { flex:1; min-width:120px; background:#fff; border-radius:10px; padding:16px; text-align:center;
+    box-shadow:0 1px 3px rgba(0,0,0,.08); } .card .num { font-size:30px; font-weight:700; }
+  .card .lbl { font-size:11px; text-transform:uppercase; letter-spacing:.5px; color:#666; margin-top:4px; }
+  .fix-card { box-shadow:0 0 0 2px #00610022,0 1px 3px rgba(0,0,0,.08); }
+  section.rep { background:#fff; border-radius:10px; padding:8px 22px 18px; box-shadow:0 1px 3px rgba(0,0,0,.08); }
+  section.rep h2 { font-size:15px; border-bottom:1px solid #eee; padding-bottom:8px; }
+  section.rep h2 .meta { font-size:12px; color:#999; font-weight:400; }
+  table { width:100%; border-collapse:collapse; font-size:13px; }
+  th { text-align:left; color:#888; font-size:11px; text-transform:uppercase; padding:6px 8px; }
+  td { padding:8px; border-top:1px solid #f0f0f0; vertical-align:top; }
+  .pill { color:#fff; padding:2px 8px; border-radius:10px; font-size:11px; white-space:nowrap; }
+  .mono{font-family:SFMono-Regular,Consolas,monospace;} .snip{color:#444;font-size:12px;} .detail{color:#666;font-size:12px;}
+  .fix { margin-top:8px; border-left:3px solid var(--verde); background:#f2fbf3; border-radius:0 6px 6px 0; padding:6px 10px; }
+  .fix-h { display:flex; align-items:center; justify-content:space-between; color:var(--verde);
+    font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.4px; margin-bottom:4px; }
+  .fix pre { margin:0; font-family:SFMono-Regular,Consolas,monospace; font-size:12px; color:#143d16;
+    white-space:pre-wrap; word-break:break-word; }
+  .copy { border:1px solid var(--verde); background:#fff; color:var(--verde); border-radius:6px;
+    font-size:10px; font-weight:700; padding:2px 10px; cursor:pointer; text-transform:uppercase; }
+  .copy:hover { background:var(--verde); color:#fff; }
+  .ok { color:var(--verde); text-align:center; padding:16px; }
+</style></head>
+<body>
+<header>
+  <h1>EPM Copilot · HFM Rules Scanner <span style="font-size:12px;opacity:.6;">DEMO</span></h1>
+  <div class="sub">Kit "5-Day Proof of Value" — análise estática read-only ·
+   os arquivos são processados 100% no seu navegador e <b>não saem da máquina</b></div>
+</header>
+<div class="wrap">
+  <div class="tabs">
+    <button class="tab active" data-pane="p-files">📁 Arquivos</button>
+    <button class="tab" data-pane="p-editor">✏️ Editor</button>
+  </div>
+  <div id="p-files" class="pane active">
+    <div id="drop">
+      <div class="big">Arraste arquivos .rle / .vbs aqui</div>
+      <div class="small">ou clique para selecionar · processamento 100% local</div>
+      <input id="picker" type="file" multiple accept=".rle,.vbs" class="hidden">
+    </div>
+    <div id="files"></div>
+    <div class="bar"><button id="run" disabled>Analisar</button></div>
+  </div>
+  <div id="p-editor" class="pane">
+    <input id="ed-name" class="ed-name" value="editor.rle" title="Nome do arquivo lógico">
+    <div class="editor-shell">
+      <div id="gutter">1</div>
+      <div class="code-wrap"><pre id="hl" aria-hidden="true"></pre>
+        <textarea id="code" spellcheck="false" placeholder="Cole ou digite a regra HFM (VBScript) aqui…"></textarea></div>
+    </div>
+    <div class="bar">
+      <button id="run-ed">Analisar</button>
+      <button id="load-sample" class="ghost" type="button">Carregar exemplo</button>
+      <button id="clear-ed" class="ghost" type="button">Limpar</button>
+    </div>
+  </div>
+  <div class="bar"><span id="status" class="small"></span>
+    <a id="dl" class="badge hidden">⬇ baixar relatório</a></div>
+  <div id="err"></div>
+  <div id="out" class="hidden"></div>
+</div>
+
+<script src="scanner.js"></script>
+<script src="report.js"></script>
+<script>
+  const $ = id => document.getElementById(id);
+  const drop=$('drop'),picker=$('picker'),filesDiv=$('files'),runBtn=$('run'),runEd=$('run-ed');
+  const statusEl=$('status'),errEl=$('err'),out=$('out'),dl=$('dl');
+  const code=$('code'),gutter=$('gutter'),hl=$('hl'),edName=$('ed-name');
+  const SAMPLE='Sub Calculate()\n    \' Cole ou edite sua regra HFM aqui e clique em Analisar.\n    HS.Exp "A#GrossMargin = A#Sales - A#COGS"\n\n    \' Exemplo de divisao SEM protecao (dispara HFM003 - critico):\n    HS.Exp "A#Margem = A#Lucro / A#Receita"\nEnd Sub';
+  let picked=[], lastHtml='';
+
+  document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
+    document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+    document.querySelectorAll('.pane').forEach(x=>x.classList.remove('active'));
+    t.classList.add('active'); $(t.dataset.pane).classList.add('active');
+  }));
+
+  function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+  const TOK=/('[^\n]*)|("(?:[^"\\]|\\.)*")|(\bHS\.[A-Za-z]+)|(\b(?:Sub|Function|End|If|Then|Else|ElseIf|For|Next|Do|Loop|While|Wend|Dim|Set|Call|Exit|And|Or|Not|Mod)\b)|(\b(?:[AEIVSYPW]|C[1-4])#[A-Za-z0-9_%[\]]*)|(\b\d+(?:\.\d+)?\b)/g;
+  function highlight(){
+    const src=code.value; let o='',last=0,m; TOK.lastIndex=0;
+    while((m=TOK.exec(src))!==null){
+      o+=esc(src.slice(last,m.index));
+      const c=m[1]?'hl-com':m[2]?'hl-str':m[3]?'hl-hs':m[4]?'hl-kw':m[5]?'hl-mem':'hl-num';
+      o+='<span class="'+c+'">'+esc(m[0])+'</span>'; last=m.index+m[0].length;
+    }
+    o+=esc(src.slice(last)); hl.innerHTML=o+'\n';
+  }
+  function syncGutter(){const n=code.value.split('\n').length||1;let s='';for(let i=1;i<=n;i++)s+=i+'\n';gutter.textContent=s.trimEnd();}
+  function refresh(){syncGutter();highlight();}
+  code.addEventListener('input',refresh);
+  code.addEventListener('scroll',()=>{gutter.scrollTop=code.scrollTop;hl.scrollTop=code.scrollTop;hl.scrollLeft=code.scrollLeft;});
+  $('load-sample').addEventListener('click',()=>{code.value=SAMPLE;refresh();});
+  $('clear-ed').addEventListener('click',()=>{code.value='';refresh();});
+  refresh();
+
+  function render(sources){
+    statusEl.textContent='Analisando…'; errEl.textContent='';
+    try{
+      const result=HFMScanner.scan(sources);
+      lastHtml=HFMReport.render(result);
+      out.innerHTML=lastHtml; out.classList.remove('hidden');
+      dl.classList.remove('hidden'); statusEl.textContent='Concluído.';
+    }catch(e){errEl.textContent='Erro: '+e.message; statusEl.textContent='';}
+  }
+  dl.addEventListener('click',()=>{
+    const blob=new Blob([lastHtml],{type:'text/html'});
+    const a=document.createElement('a'); a.href=URL.createObjectURL(blob);
+    a.download='hfm-report.html'; a.click();
+  });
+
+  function show(){filesDiv.innerHTML=picked.map(f=>'<span>'+f.name+'</span>').join('');runBtn.disabled=!picked.length;}
+  function accept(list){picked=[...list].filter(f=>/\.(rle|vbs)$/i.test(f.name));
+    errEl.textContent=picked.length<list.length?'Ignorados arquivos que não são .rle/.vbs.':'';show();}
+  drop.addEventListener('click',()=>picker.click());
+  picker.addEventListener('change',e=>accept(e.target.files));
+  ['dragover','dragenter'].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.add('hot');}));
+  ['dragleave','drop'].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.remove('hot');}));
+  drop.addEventListener('drop',e=>accept(e.dataTransfer.files));
+  runBtn.addEventListener('click',async()=>{
+    runBtn.disabled=true; statusEl.textContent='Lendo arquivos…';
+    try{const sources=await Promise.all(picked.map(f=>f.text().then(t=>[f.name,t]))); render(sources);}
+    finally{runBtn.disabled=false;}
+  });
+  runEd.addEventListener('click',()=>{
+    const text=code.value; if(!text.trim()){errEl.textContent='Editor vazio.';return;}
+    let name=(edName.value||'editor.rle').trim(); if(!/\.(rle|vbs)$/i.test(name))name+='.rle';
+    render([[name,text]]);
+  });
+</script>
+</body></html>
