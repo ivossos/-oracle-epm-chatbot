@@ -33,11 +33,28 @@ def _collect(paths: list[str]) -> list[str]:
     return sorted(set(files))
 
 
-def scan(paths: list[str]) -> ScanResult:
-    result = ScanResult(
+def _new_result() -> ScanResult:
+    return ScanResult(
         generated_at=_dt.datetime.now().strftime("%Y-%m-%d %H:%M"),
         tool_version=__version__,
     )
+
+
+def scan_sources(sources: list[tuple[str, str]]) -> ScanResult:
+    """Analisa fontes em memoria: lista de (nome_do_arquivo, texto)."""
+    from .parser import parse_text
+
+    result = _new_result()
+    for name, text in sources:
+        pf = parse_text(text, name)
+        rep = FileReport(file=pf.file, subs=pf.subs, line_count=pf.line_count)
+        rep.findings = run_all(pf)
+        result.reports.append(rep)
+    return result
+
+
+def scan(paths: list[str]) -> ScanResult:
+    result = _new_result()
     for path in _collect(paths):
         pf = parse_file(path)
         rep = FileReport(file=pf.file, subs=pf.subs, line_count=pf.line_count)
