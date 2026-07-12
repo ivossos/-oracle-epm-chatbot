@@ -38,6 +38,12 @@ def render_html(result: ScanResult, title: str = "HFM Rules Scanner") -> str:
         rows = []
         for f in rep.findings:
             color = _SEV_COLOR[f.severity.value]
+            fix_html = (
+                f'<div class="fix"><div class="fix-h">✔ Correção sugerida</div>'
+                f"<pre>{_esc(f.fix)}</pre></div>"
+                if f.fix
+                else ""
+            )
             rows.append(
                 f"<tr>"
                 f'<td><span class="pill" style="background:{color}">'
@@ -45,7 +51,7 @@ def render_html(result: ScanResult, title: str = "HFM Rules Scanner") -> str:
                 f"<td class='mono'>{f.rule_id}</td>"
                 f"<td>L{f.line}</td>"
                 f"<td><b>{_esc(f.title)}</b><br><span class='mono snip'>{_esc(f.snippet)}</span>"
-                f"<br><span class='detail'>{_esc(f.detail)}</span></td>"
+                f"<br><span class='detail'>{_esc(f.detail)}</span>{fix_html}</td>"
                 f"</tr>"
             )
         body = (
@@ -93,6 +99,12 @@ def render_html(result: ScanResult, title: str = "HFM Rules Scanner") -> str:
   .mono {{ font-family: SFMono-Regular, Consolas, monospace; }}
   .snip {{ color: #444; font-size: 12px; }}
   .detail {{ color: #666; font-size: 12px; }}
+  .fix {{ margin-top: 8px; border-left: 3px solid #006100; background: #f2fbf3;
+         border-radius: 0 6px 6px 0; padding: 6px 10px; }}
+  .fix-h {{ color: #006100; font-size: 11px; font-weight: 700;
+           text-transform: uppercase; letter-spacing: .4px; margin-bottom: 4px; }}
+  .fix pre {{ margin: 0; font-family: SFMono-Regular, Consolas, monospace;
+             font-size: 12px; color: #143d16; white-space: pre-wrap; word-break: break-word; }}
   .ok {{ color: #006100; text-align: center; padding: 16px; }}
   footer {{ text-align: center; color: #999; font-size: 11px; margin-top: 30px; }}
   @media print {{ body {{ background: #fff; }} section, .card {{ box-shadow: none;

@@ -72,9 +72,22 @@ _INDEX = f"""<!DOCTYPE html>
   #gutter {{ background: #fafafa; color: #aaa; text-align: right; padding: 14px 8px;
             font-family: SFMono-Regular, Consolas, monospace; font-size: 13px;
             line-height: 1.5; user-select: none; white-space: pre; border-right: 1px solid #eee; }}
-  #code {{ flex: 1; border: 0; outline: 0; resize: vertical; min-height: 300px;
-          padding: 14px 12px; font-family: SFMono-Regular, Consolas, monospace;
-          font-size: 13px; line-height: 1.5; tab-size: 4; color: {INK}; }}
+  .code-wrap {{ position: relative; flex: 1; min-height: 300px; }}
+  /* Camada de highlight e textarea compartilham metricas identicas e se sobrepoem. */
+  #hl, #code {{ margin: 0; padding: 14px 12px; font-family: SFMono-Regular, Consolas, monospace;
+          font-size: 13px; line-height: 1.5; tab-size: 4; white-space: pre-wrap;
+          word-break: break-word; border: 0; }}
+  #hl {{ position: absolute; inset: 0; overflow: hidden; pointer-events: none;
+        color: {INK}; }}
+  #code {{ position: absolute; inset: 0; width: 100%; height: 100%; resize: vertical;
+          outline: 0; background: transparent; color: transparent; caret-color: {INK}; }}
+  /* Cores do realce (tema claro). */
+  .hl-kw {{ color: #0b53c1; font-weight: 600; }}   /* Sub, If, Then, End... */
+  .hl-hs {{ color: {LARANJA}; font-weight: 600; }}  /* HS.Exp, HS.Clear... */
+  .hl-mem {{ color: #7a1fa2; }}                     /* A#, E#, C1#... */
+  .hl-str {{ color: #0a7f2e; }}                     /* "..." */
+  .hl-com {{ color: #999; font-style: italic; }}    /* ' comentario */
+  .hl-num {{ color: #b5330a; }}                     /* 123 */
   button {{ background: {LARANJA}; color: #fff; border: 0; border-radius: 8px;
            padding: 12px 26px; font-size: 15px; font-weight: 600; cursor: pointer; }}
   button.ghost {{ background: #fff; color: {LARANJA}; border: 1px solid {LARANJA};
@@ -116,8 +129,11 @@ _INDEX = f"""<!DOCTYPE html>
            title="Nome do arquivo lógico usado no relatório">
     <div class="editor-shell">
       <div id="gutter">1</div>
-      <textarea id="code" spellcheck="false"
-        placeholder="Cole ou digite a regra HFM (VBScript) aqui…"></textarea>
+      <div class="code-wrap">
+        <pre id="hl" aria-hidden="true"></pre>
+        <textarea id="code" spellcheck="false"
+          placeholder="Cole ou digite a regra HFM (VBScript) aqui…"></textarea>
+      </div>
     </div>
     <div class="bar">
       <button id="run-ed">Analisar</button>
@@ -138,7 +154,7 @@ _INDEX = f"""<!DOCTYPE html>
   const drop = $('drop'), picker = $('picker'), filesDiv = $('files');
   const runBtn = $('run'), runEd = $('run-ed');
   const statusEl = $('status'), errEl = $('err'), out = $('out'), dl = $('dl');
-  const code = $('code'), gutter = $('gutter'), edName = $('ed-name');
+  const code = $('code'), gutter = $('gutter'), hl = $('hl'), edName = $('ed-name');
   const SAMPLE = {_EDITOR_SAMPLE_JS};
   let picked = [];
 
@@ -150,17 +166,41 @@ _INDEX = f"""<!DOCTYPE html>
     $(t.dataset.pane).classList.add('active');
   }}));
 
-  // ---- Editor gutter (line numbers) ----
+  // ---- Editor: gutter (line numbers) + realce de sintaxe HFM ----
+  function esc(s) {{
+    return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }}
+  // Tokenizador de passada unica: a alternancia da prioridade (comentario e
+  // string primeiro), evitando placeholders e restauracao.
+  const TOK = /('[^\\n]*)|("(?:[^"\\\\]|\\\\.)*")|(\\bHS\\.[A-Za-z]+)|(\\b(?:Sub|Function|End|If|Then|Else|ElseIf|For|Next|Do|Loop|While|Wend|Dim|Set|Call|Exit|And|Or|Not|Mod)\\b)|(\\b(?:[AEIVSYPW]|C[1-4])#[A-Za-z0-9_%\\[\\]]*)|(\\b\\d+(?:\\.\\d+)?\\b)/g;
+  function highlight() {{
+    const src = code.value;
+    let outp = '', last = 0, m;
+    TOK.lastIndex = 0;
+    while ((m = TOK.exec(src)) !== null) {{
+      outp += esc(src.slice(last, m.index));
+      const cls = m[1] ? 'hl-com' : m[2] ? 'hl-str' : m[3] ? 'hl-hs'
+                : m[4] ? 'hl-kw' : m[5] ? 'hl-mem' : 'hl-num';
+      outp += '<span class="' + cls + '">' + esc(m[0]) + '</span>';
+      last = m.index + m[0].length;
+    }}
+    outp += esc(src.slice(last));
+    hl.innerHTML = outp + '\\n';
+  }}
   function syncGutter() {{
     const n = code.value.split('\\n').length || 1;
     let s = ''; for (let i = 1; i <= n; i++) s += i + '\\n';
     gutter.textContent = s.trimEnd();
   }}
-  code.addEventListener('input', syncGutter);
-  code.addEventListener('scroll', () => {{ gutter.scrollTop = code.scrollTop; }});
-  $('load-sample').addEventListener('click', () => {{ code.value = SAMPLE; syncGutter(); }});
-  $('clear-ed').addEventListener('click', () => {{ code.value = ''; syncGutter(); }});
-  syncGutter();
+  function refresh() {{ syncGutter(); highlight(); }}
+  code.addEventListener('input', refresh);
+  code.addEventListener('scroll', () => {{
+    gutter.scrollTop = code.scrollTop; hl.scrollTop = code.scrollTop;
+    hl.scrollLeft = code.scrollLeft;
+  }});
+  $('load-sample').addEventListener('click', () => {{ code.value = SAMPLE; refresh(); }});
+  $('clear-ed').addEventListener('click', () => {{ code.value = ''; refresh(); }});
+  refresh();
 
   // ---- Shared scan call ----
   async function runScan(sources, label) {{

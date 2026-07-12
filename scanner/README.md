@@ -16,9 +16,14 @@ aparece na própria página, com botão para baixar o HTML (imprimir → PDF).
 
 Duas abas:
 - **📁 Arquivos** — arrastar e soltar um ou vários arquivos.
-- **✏️ Editor** — colar/editar uma regra e analisar ao vivo (com numeração de
-  linha e botão "Carregar exemplo"). Ideal para demonstrar um achado
-  aparecendo/sumindo conforme a regra é ajustada.
+- **✏️ Editor** — colar/editar uma regra e analisar ao vivo, com **realce de
+  sintaxe** (palavras-chave, `HS.*`, membros `A#`, strings, comentários),
+  numeração de linha e botão "Carregar exemplo". Ideal para demonstrar um
+  achado aparecendo/sumindo conforme a regra é ajustada.
+
+Cada achado no relatório traz, quando aplicável, um bloco verde **"Correção
+sugerida"** com o código HFM já corrigido (ex.: HFM003 embrulha a divisão em
+`If <denominador> <> 0 Then … Else HS.Clear … End If`).
 
 ## CLI
 

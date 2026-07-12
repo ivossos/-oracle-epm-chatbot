@@ -22,7 +22,9 @@ _YEAR_RE = re.compile(r'"[^"]*\b(20[0-9]{2})\b[^"]*"')
 def check_hardcoded_year(pf: ParsedFile) -> list[Finding]:
     out = []
     for ll in pf.logical_lines:
-        if _YEAR_RE.search(ll.text):
+        m = _YEAR_RE.search(ll.text)
+        if m:
+            fix = re.sub(r"\b20[0-9]{2}\b", "@CUR", ll.raw)  # troca ano por @CUR
             out.append(
                 Finding(
                     rule_id="HFM001",
@@ -35,6 +37,7 @@ def check_hardcoded_year(pf: ParsedFile) -> list[Finding]:
                         "Ano literal encontrado. Use @CUR/Y#Cur ou variavel de "
                         "POV para a regra sobreviver a virada de ano."
                     ),
+                    fix=fix,
                 )
             )
     return out
@@ -50,6 +53,12 @@ def check_magic_number(pf: ParsedFile) -> list[Finding]:
     out = []
     for ll in pf.logical_lines:
         if _MAGIC_RE.search(ll.text):
+            # Sugere ler o valor de uma conta driver em vez do literal.
+            fix = re.sub(
+                r'=\s*(-?\d+(?:\.\d+)?)\s*(")',
+                r'= A#Driver\2  \' externalize \1 para conta/premissa',
+                ll.raw,
+            )
             out.append(
                 Finding(
                     rule_id="HFM002",
@@ -62,6 +71,7 @@ def check_magic_number(pf: ParsedFile) -> list[Finding]:
                         "Constante numerica gravada diretamente no consolidado. "
                         "Externalize para driver/premissa ou membro de dados."
                     ),
+                    fix=fix,
                 )
             )
     return out
@@ -73,6 +83,32 @@ def check_magic_number(pf: ParsedFile) -> list[Finding]:
 # ---------------------------------------------------------------------------
 _DIV_RE = re.compile(r'HS\.Exp\s+"[^"]*/[^"]*"', re.IGNORECASE)
 _GUARD_RE = re.compile(r"<>\s*0|>\s*0|=\s*0\s+Then|IsZero", re.IGNORECASE)
+# Captura alvo (LHS) e denominador (1o token apos '/') para gerar a guarda.
+_DIV_PARTS_RE = re.compile(
+    r'HS\.Exp\s+"\s*(?P<lhs>[AEIVSYPWC][^"=]*?)\s*=\s*[^"]*?/\s*'
+    r'(?P<den>(?:[AEIVSYPWC]\d?#[A-Za-z0-9_%\[\]\.]+|[A-Za-z_]\w*))',
+    re.IGNORECASE,
+)
+
+
+def _division_fix(raw: str) -> str | None:
+    """Gera bloco If <denominador> <> 0 Then ... Else HS.Clear a partir da linha."""
+    m = _DIV_PARTS_RE.search(raw)
+    if not m:
+        return None
+    lhs = m.group("lhs").strip()
+    den = m.group("den").strip()
+    indent = raw[: len(raw) - len(raw.lstrip())]
+    expr = raw.strip()
+    # Se o denominador for um membro (tem #), le via GetCell; senao usa a variavel.
+    cond = f'HS.GetCell("{den}")' if "#" in den else den
+    return (
+        f"{indent}If {cond} <> 0 Then\n"
+        f"{indent}    {expr}\n"
+        f"{indent}Else\n"
+        f'{indent}    HS.Clear "{lhs}"\n'
+        f"{indent}End If"
+    )
 
 
 def check_unguarded_division(pf: ParsedFile) -> list[Finding]:
@@ -101,6 +137,7 @@ def check_unguarded_division(pf: ParsedFile) -> list[Finding]:
                         "Pode gerar erro/#IND no consolidado. Proteja com "
                         "If <denominador> <> 0 Then ... Else HS.Clear."
                     ),
+                    fix=_division_fix(ll.raw),
                 )
             )
     return out
@@ -122,6 +159,12 @@ def check_circular(pf: ParsedFile) -> list[Finding]:
         dim, target, rhs = m.group(1), m.group(2).strip(), m.group(3)
         token = f"{dim}#{target}"
         if re.search(re.escape(token) + r"\b", rhs):
+            # Sugere separar o acumulo num membro/variavel auxiliar.
+            fix = (
+                f'{ll.raw.rstrip()}\n'
+                f"' Evite '{token}' nos dois lados: acumule num membro auxiliar,\n"
+                f"' ex.: HS.Exp \"{token} = A#_Base + {rhs.replace(token, 'A#_Delta').strip()}\""
+            )
             out.append(
                 Finding(
                     rule_id="HFM004",
@@ -134,6 +177,7 @@ def check_circular(pf: ParsedFile) -> list[Finding]:
                         f"O membro '{token}' aparece nos dois lados da atribuicao. "
                         "Revise para evitar acumulo/recalculo circular."
                     ),
+                    fix=fix,
                 )
             )
     return out
@@ -159,6 +203,10 @@ def check_hs_case(pf: ParsedFile) -> list[Finding]:
     dominant = max(variants, key=lambda k: variants[k])
     minor = [v for v in variants if v != dominant]
     line = min(first_line[v] for v in minor)
+    fix = (
+        f"' Padronize todas as chamadas para '{dominant}.' "
+        f"(localize e substitua: {', '.join(v + '.' for v in minor)} -> {dominant}.)"
+    )
     return [
         Finding(
             rule_id="HFM005",
@@ -171,6 +219,7 @@ def check_hs_case(pf: ParsedFile) -> list[Finding]:
                 "Mistura de 'HS.'/'Hs.' no mesmo arquivo. Padronize (o guia "
                 "Oracle usa 'HS.') para legibilidade e busca."
             ),
+            fix=fix,
         )
     ]
 

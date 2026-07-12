@@ -84,3 +84,18 @@ def test_comment_not_parsed_as_code():
     # Ano em comentario nao deve disparar HFM001.
     code = 'Sub C()\n    \' referencia a 2024 apenas em comentario\nEnd Sub\n'
     assert check_hardcoded_year(_pf(code)) == []
+
+
+def test_division_fix_wraps_with_guard():
+    code = 'Sub C()\n    HS.Exp "A#Margem = A#Lucro / A#Receita"\nEnd Sub\n'
+    f = check_unguarded_division(_pf(code))[0]
+    assert f.fix is not None
+    assert 'HS.GetCell("A#Receita") <> 0 Then' in f.fix
+    assert 'HS.Clear "A#Margem"' in f.fix
+    assert "End If" in f.fix
+
+
+def test_hardcoded_year_fix_uses_cur():
+    code = 'Sub C()\n    HS.Exp "A#x = Y#2024.A#Sales"\nEnd Sub\n'
+    f = check_hardcoded_year(_pf(code))[0]
+    assert f.fix is not None and "@CUR" in f.fix and "2024" not in f.fix

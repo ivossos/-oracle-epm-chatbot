@@ -29,8 +29,9 @@ class Finding:
     severity: Severity
     file: str             # nome do arquivo
     line: int             # linha 1-indexed
-    snippet: str          # trecho da linha
+    snippet: str          # trecho da linha (antes)
     detail: str           # explicacao + recomendacao
+    fix: str | None = None  # correcao sugerida (depois); None = sem auto-fix
 
     def to_dict(self) -> dict[str, Any]:
         d = dataclasses.asdict(self)
