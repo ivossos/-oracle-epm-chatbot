@@ -176,5 +176,8 @@
     let name=(edName.value||'editor.rle').trim(); if(!/\.(rle|vbs)$/i.test(name))name+='.rle';
     render([[name,text]]);
   });
+
+  // Demo: pre-carrega o exemplo e ja mostra o relatorio (visitante ve funcionar na hora).
+  code.value=SAMPLE; refresh(); render([['exemplo.rle',SAMPLE]]);
 </script>
 </body></html>
