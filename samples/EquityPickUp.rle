@@ -1,0 +1,23 @@
+'==============================================================================
+' Arquivo de Regras HFM - Exemplo Sub EquityPickUp
+' Calcula Income From Subsidiary com base no % de participacao (Shares%Owned).
+' POV padrao: Scenario/Year/Period corrente, Entity = owner, Value = entity currency.
+' Fonte: Oracle HFM 11.2 Rules Guide (Creating Rules Files)
+'==============================================================================
+
+Sub EquityPickUp()
+
+    Owner  = Hs.Entity.Member
+    Owned  = Hs.Entity.Owned
+    OwnerDefaultCurrency = HS.Entity.DefCurrency("")
+
+    ' Le o percentual de participacao do owner sobre a subsidiaria.
+    lPown = Hs.GetCell("E#" & Owned & ".I#" & Owner & _
+        ".V#[None].A#[Shares%Owned].C1#[None].C2#[None].C3#[None].C4#[None]")
+
+    ' Limpa e recalcula a receita proveniente da subsidiaria.
+    Hs.Clear "A#IncomeFromSubsidiary.I#" & Owned
+    Hs.Exp  "A#IncomeFromSubsidiary.I#" & Owned & " = E#" & Owned & _
+        ".V#" & OwnerDefaultCurrency & ".A#NetIncome.I#[ICP Top] *" & lPown
+
+End Sub

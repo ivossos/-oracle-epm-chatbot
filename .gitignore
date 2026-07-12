@@ -5,3 +5,7 @@ out/*.json
 __pycache__/
 *.pyc
 .pytest_cache/
+
+# web-demo deploy artifacts
+web-demo/.netlify/
+web-demo/dist/
