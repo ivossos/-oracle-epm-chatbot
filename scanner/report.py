@@ -34,13 +34,18 @@ def render_html(result: ScanResult, title: str = "HFM Rules Scanner") -> str:
     )
 
     sections = []
+    fix_count = 0
     for rep in result.reports:
         rows = []
         for f in rep.findings:
             color = _SEV_COLOR[f.severity.value]
+            if f.fix:
+                fix_count += 1
             fix_html = (
-                f'<div class="fix"><div class="fix-h">✔ Correção sugerida</div>'
-                f"<pre>{_esc(f.fix)}</pre></div>"
+                f'<div class="fix"><div class="fix-h">'
+                f"<span>✔ Correção sugerida</span>"
+                f'<button class="copy" type="button" onclick="copyFix(this)">Copiar</button>'
+                f"</div><pre>{_esc(f.fix)}</pre></div>"
                 if f.fix
                 else ""
             )
@@ -101,14 +106,20 @@ def render_html(result: ScanResult, title: str = "HFM Rules Scanner") -> str:
   .detail {{ color: #666; font-size: 12px; }}
   .fix {{ margin-top: 8px; border-left: 3px solid #006100; background: #f2fbf3;
          border-radius: 0 6px 6px 0; padding: 6px 10px; }}
-  .fix-h {{ color: #006100; font-size: 11px; font-weight: 700;
+  .fix-h {{ display: flex; align-items: center; justify-content: space-between;
+           color: #006100; font-size: 11px; font-weight: 700;
            text-transform: uppercase; letter-spacing: .4px; margin-bottom: 4px; }}
   .fix pre {{ margin: 0; font-family: SFMono-Regular, Consolas, monospace;
              font-size: 12px; color: #143d16; white-space: pre-wrap; word-break: break-word; }}
+  .copy {{ border: 1px solid #006100; background: #fff; color: #006100;
+          border-radius: 6px; font-size: 10px; font-weight: 700; padding: 2px 10px;
+          cursor: pointer; text-transform: uppercase; letter-spacing: .3px; }}
+  .copy:hover {{ background: #006100; color: #fff; }}
+  .fix-card {{ box-shadow: 0 0 0 2px #00610022, 0 1px 3px rgba(0,0,0,.08); }}
   .ok {{ color: #006100; text-align: center; padding: 16px; }}
   footer {{ text-align: center; color: #999; font-size: 11px; margin-top: 30px; }}
   @media print {{ body {{ background: #fff; }} section, .card {{ box-shadow: none;
-    border: 1px solid #eee; }} }}
+    border: 1px solid #eee; }} .copy {{ display: none; }} }}
 </style></head>
 <body>
 <header>
@@ -122,8 +133,20 @@ def render_html(result: ScanResult, title: str = "HFM Rules Scanner") -> str:
       <div class="lbl">Arquivos</div></div>
     <div class="card"><div class="num">{s['subs']}</div>
       <div class="lbl">Sub/Function</div></div>
+    <div class="card fix-card"><div class="num" style="color:#006100">{fix_count}</div>
+      <div class="lbl">Correções sugeridas</div></div>
   </div>
   {''.join(sections)}
   <footer>EPM Copilot © MySynergy.ai · Analise heuristica read-only.
    Achados exigem validacao por especialista. Nenhuma conexao ao HFM foi feita.</footer>
-</div></body></html>"""
+</div>
+<script>
+  function copyFix(btn) {{
+    var pre = btn.parentElement.nextElementSibling;
+    navigator.clipboard.writeText(pre.textContent).then(function() {{
+      var old = btn.textContent; btn.textContent = 'Copiado ✓';
+      setTimeout(function() {{ btn.textContent = old; }}, 1500);
+    }});
+  }}
+</script>
+</body></html>"""
