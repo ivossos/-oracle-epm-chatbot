@@ -1,0 +1,32 @@
+1
+00:00:00,400 --> 00:00:02,850
+{\an8}Conheça o EPMCopilot.
+
+2
+00:00:02,900 --> 00:00:05,400
+{\an8}Pergunte como ficou a receita do mês,
+
+3
+00:00:05,450 --> 00:00:08,400
+{\an8}e ele responde na hora,
+com o desvio por região.
+
+4
+00:00:08,450 --> 00:00:10,700
+{\an8}Peça para atualizar
+o forecast de novembro,
+
+5
+00:00:10,750 --> 00:00:12,850
+{\an8}e ele calcula o novo cenário.
+
+6
+00:00:12,900 --> 00:00:15,750
+{\an8}Com um clique,
+roda a regra de alocação.
+
+7
+00:00:15,800 --> 00:00:19,100
+{\an8}Seu planejamento,
+em uma conversa.
+

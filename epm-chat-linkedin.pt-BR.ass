@@ -1,0 +1,19 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 0
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Reels,Inter,50,&H00FFFFFF,&H00FFFFFF,&H00F04E4B,&H00F04E4B,1,0,0,0,100,100,0,0,3,18,0,1,110,1010,150,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.40,0:00:02.85,Reels,,0,0,0,,Conheça o EPMCopilot.
+Dialogue: 0,0:00:02.90,0:00:05.40,Reels,,0,0,0,,Pergunte como ficou a receita do mês,
+Dialogue: 0,0:00:05.45,0:00:08.40,Reels,,0,0,0,,e ele responde na hora,\Ncom o desvio por região.
+Dialogue: 0,0:00:08.45,0:00:10.70,Reels,,0,0,0,,Peça para atualizar\No forecast de novembro,
+Dialogue: 0,0:00:10.75,0:00:12.85,Reels,,0,0,0,,e ele calcula o novo cenário.
+Dialogue: 0,0:00:12.90,0:00:15.75,Reels,,0,0,0,,Com um clique,\Nroda a regra de alocação.
+Dialogue: 0,0:00:15.80,0:00:19.10,Reels,,0,0,0,,Seu planejamento,\Nem uma conversa.
