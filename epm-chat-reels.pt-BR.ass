@@ -10,10 +10,10 @@ Style: Reels,Inter,58,&H00FFFFFF,&H00FFFFFF,&H00F04E4B,&H00F04E4B,1,0,0,0,100,10
 
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
-Dialogue: 0,0:00:00.40,0:00:02.95,Reels,,0,0,0,,Conheça o Assistente EPM.
-Dialogue: 0,0:00:03.00,0:00:05.50,Reels,,0,0,0,,Pergunte como ficou a receita do mês,
-Dialogue: 0,0:00:05.55,0:00:08.55,Reels,,0,0,0,,e ele responde na hora,\Ncom o desvio por região.
-Dialogue: 0,0:00:08.60,0:00:10.90,Reels,,0,0,0,,Peça para atualizar\No forecast de novembro,
-Dialogue: 0,0:00:10.95,0:00:13.10,Reels,,0,0,0,,e ele calcula o novo cenário.
-Dialogue: 0,0:00:13.15,0:00:16.00,Reels,,0,0,0,,Com um clique,\Nroda a regra de alocação.
-Dialogue: 0,0:00:16.05,0:00:19.10,Reels,,0,0,0,,Seu planejamento,\Nem uma conversa.
+Dialogue: 0,0:00:00.40,0:00:02.85,Reels,,0,0,0,,Conheça o EPMCopilot.
+Dialogue: 0,0:00:02.90,0:00:05.40,Reels,,0,0,0,,Pergunte como ficou a receita do mês,
+Dialogue: 0,0:00:05.45,0:00:08.40,Reels,,0,0,0,,e ele responde na hora,\Ncom o desvio por região.
+Dialogue: 0,0:00:08.45,0:00:10.70,Reels,,0,0,0,,Peça para atualizar\No forecast de novembro,
+Dialogue: 0,0:00:10.75,0:00:12.85,Reels,,0,0,0,,e ele calcula o novo cenário.
+Dialogue: 0,0:00:12.90,0:00:15.75,Reels,,0,0,0,,Com um clique,\Nroda a regra de alocação.
+Dialogue: 0,0:00:15.80,0:00:19.10,Reels,,0,0,0,,Seu planejamento,\Nem uma conversa.
