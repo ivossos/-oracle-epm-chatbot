@@ -1,0 +1,32 @@
+<!-- @dsCard height=288 -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap">
+<style>
+body{margin:0;background:var(--surface-0)}
+.c{position:relative;width:960px;height:288px;overflow:hidden;background:var(--surface-0);font-family:var(--font-sans)}
+svg{position:absolute;left:0;top:0}
+.accent{fill:var(--accent)}.ink{fill:var(--ink)}.soft{fill:var(--accent-soft)}.s2{fill:var(--surface-200)}
+.lg{rx:var(--radius-lg)}.sm{rx:var(--radius-sm)}
+.arc{fill:none;stroke-width:2}.a1{stroke:var(--accent-soft)}.a2{stroke:var(--accent)}
+.txt{position:absolute;left:40px;bottom:32px;max-width:880px}
+h1{margin:0;font-size:64px;line-height:.95;font-weight:600;letter-spacing:-.02em;color:var(--ink)}
+p{margin:12px 0 0;font-size:14px;line-height:20px;color:var(--ink-muted)}
+</style>
+<div class="c">
+<svg width="960" height="112" viewBox="0 0 960 112" aria-hidden="true">
+<!-- blocks: accent 432x112, ink 160x112 (radius-lg), accent-soft 240x112 (radius-lg), surface-200 bleeding right; gaps space-2 -->
+<!-- arrangement: a strip of unequal bands across the top (top-band skeleton: name too wide for its zone) -->
+<!-- pattern: concentric quarter arcs = an easing curve; "Motion explains change" (README) picks the literal motif row -->
+<!-- scales: gap space-2 (8px), arc pitch space-6 (24px), radii radius-lg / radius-sm -->
+<rect class="accent" x="0" y="0" width="432" height="112"/>
+<rect class="ink lg" x="440" y="0" width="160" height="112"/>
+<rect class="soft lg" x="608" y="0" width="240" height="112"/>
+<rect class="s2 sm" x="856" y="0" width="120" height="112"/>
+<path class="arc a1" d="M336 112 A96 96 0 0 1 432 16"/>
+<path class="arc a1" d="M360 112 A72 72 0 0 1 432 40"/>
+<path class="arc a1" d="M384 112 A48 48 0 0 1 432 64"/>
+<path class="arc a1" d="M408 112 A24 24 0 0 1 432 88"/>
+<path class="arc a2" d="M632 112 C 680 112, 704 24, 824 24"/>
+<path class="arc a2" d="M632 88 C 680 88, 704 48, 824 48" style="opacity:.5"/>
+</svg>
+<div class="txt"><h1>Authorization Motion</h1><p>How roles and permissions move: timing, curves and choreography.</p></div>
+</div>

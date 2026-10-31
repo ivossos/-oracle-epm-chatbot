@@ -1,0 +1,21 @@
+<!-- @dsCard group="Permissions" height=180 subtitle="Add flashes in; × collapses out" -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono&display=swap">
+<style>body{margin:0;font-family:var(--font-sans);color:var(--ink);background:var(--surface-0);font-size:14px;line-height:20px}.slug{font-family:var(--font-mono);font-size:12px;color:var(--ink-muted)}.btn{font:500 14px/20px var(--font-sans);border-radius:var(--radius-md);padding:6px 12px;border:1px solid var(--border-strong);background:var(--surface-0);color:var(--ink);cursor:pointer;transition:background var(--duration-instant) var(--ease-standard)}.btn:hover{background:var(--surface-100)}.btn.primary{background:var(--accent);color:var(--on-accent);border-color:transparent}.btn.primary:hover{background:var(--accent-hover)}button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-iteration-count:1!important;transition-property:opacity!important;transition-duration:var(--duration-fast)!important}}
+.w{margin:16px}.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;min-height:28px}
+.chip{display:inline-flex;align-items:center;gap:4px;overflow:hidden;white-space:nowrap;border:1px solid var(--border);background:var(--surface-100);border-radius:var(--radius-sm);padding:2px 4px 2px 8px;color:var(--ink)}
+.chip button{all:unset;cursor:pointer;width:16px;height:16px;text-align:center;line-height:16px;color:var(--ink-muted);border-radius:var(--radius-sm)}.chip button:hover{color:var(--ink);background:var(--surface-200)}
+.chip.in{animation:in var(--duration-fast) var(--ease-enter) both,flash 600ms var(--ease-standard)}
+@keyframes in{from{opacity:0;transform:scale(.96)}}
+@keyframes flash{0%,40%{background:var(--accent-soft);border-color:var(--accent)}}
+.chip.out{transition:opacity var(--duration-fast) var(--ease-exit),max-width var(--duration-fast) var(--ease-exit),padding var(--duration-fast) var(--ease-exit),margin var(--duration-fast) var(--ease-exit);opacity:0;max-width:0!important;padding-left:0;padding-right:0;margin-right:-8px;border-width:0}
+.add{margin-top:16px;display:flex;gap:8px}
+</style>
+<div class="w"><div class="row" id="r"></div><div class="add"><button class="btn" id="a">+ Add permission</button><button class="btn" id="x">Add 3 (stagger)</button></div></div>
+<script>
+const pool=["posts:read","posts:write","media:upload","users:invite","billing:view","roles:manage","audit:read","sso:configure"];let i=0;const r=document.getElementById('r');
+function add(delay){const s=pool[i++%pool.length];const c=document.createElement('span');c.className='chip in slug';c.style.color='var(--ink)';c.style.animationDelay=(delay||0)+'ms, '+(delay||0)+'ms';
+c.innerHTML=s+'<button aria-label="Remove '+s+'">×</button>';c.querySelector('button').onclick=()=>{c.style.maxWidth=c.offsetWidth+'px';c.offsetWidth;c.classList.add('out');setTimeout(()=>c.remove(),150)};r.appendChild(c)}
+[0,1].forEach(()=>{add(0)});
+document.getElementById('a').onclick=()=>add(0);
+document.getElementById('x').onclick=()=>[0,1,2].forEach(k=>add(k*30));
+</script>

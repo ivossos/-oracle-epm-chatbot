@@ -1,0 +1,23 @@
+<!-- @dsCard group="Roles" height=260 subtitle="Loads, shimmers, then crossfades to rows" -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono&display=swap">
+<style>body{margin:0;font-family:var(--font-sans);color:var(--ink);background:var(--surface-0);font-size:14px;line-height:20px}.slug{font-family:var(--font-mono);font-size:12px;color:var(--ink-muted)}.btn{font:500 14px/20px var(--font-sans);border-radius:var(--radius-md);padding:6px 12px;border:1px solid var(--border-strong);background:var(--surface-0);color:var(--ink);cursor:pointer;transition:background var(--duration-instant) var(--ease-standard)}.btn:hover{background:var(--surface-100)}.btn.primary{background:var(--accent);color:var(--on-accent);border-color:transparent}.btn.primary:hover{background:var(--accent-hover)}button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-iteration-count:1!important;transition-property:opacity!important;transition-duration:var(--duration-fast)!important}}
+.t{position:relative;margin:16px;border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;height:176px}
+.layer{position:absolute;inset:0;transition:opacity var(--duration-slow) var(--ease-standard)}
+.row{display:flex;align-items:center;gap:16px;height:44px;padding:0 16px;border-top:1px solid var(--border);box-sizing:border-box}.row:first-child{border-top:0}
+.b{height:10px;border-radius:var(--radius-sm);background:linear-gradient(90deg,var(--surface-200) 0%,var(--surface-200) 35%,var(--shimmer) 50%,var(--surface-200) 65%,var(--surface-200) 100%);background-size:300% 100%;animation:sh var(--duration-shimmer) var(--ease-linear) infinite}
+@keyframes sh{from{background-position:100% 0}to{background-position:0 0}}
+.data .row{opacity:0;transform:translateY(4px);transition:opacity var(--duration-slow) var(--ease-enter),transform var(--duration-slow) var(--ease-enter)}
+.loaded .data .row{opacity:1;transform:none}.loaded .sk{opacity:0}
+.n{font-weight:500;width:120px}.c{margin-left:auto;font-size:12px;color:var(--ink-muted)}
+.bar{display:flex;justify-content:flex-end;margin:0 16px}
+</style>
+<div id="w"><div class="t"><div class="layer sk" id="sk"></div><div class="layer data" id="d"></div></div><div class="bar"><button class="btn" id="r">Reload</button></div></div>
+<script>
+const sk=document.getElementById('sk'),d=document.getElementById('d'),w=document.getElementById('w');
+const widths=[[120,80,60],[96,64,60],[140,72,60],[88,56,60]];
+sk.innerHTML=widths.map(x=>'<div class="row">'+x.map((v,j)=>'<span class="b" style="width:'+v+'px'+(j==2?';margin-left:auto':'')+'"></span>').join('')+'</div>').join('');
+const rows=[["Admin","admin",12],["Editor","editor",5],["Billing","billing-admin",3],["Viewer","viewer",1]];
+d.innerHTML=rows.map((r,i)=>'<div class="row" style="transition-delay:'+(i*30)+'ms"><span class="n">'+r[0]+'</span><span class="slug">'+r[1]+'</span><span class="c">'+r[2]+' permissions</span></div>').join('');
+function load(){w.classList.remove('loaded');setTimeout(()=>w.classList.add('loaded'),1800)}
+document.getElementById('r').onclick=load;load();
+</script>
