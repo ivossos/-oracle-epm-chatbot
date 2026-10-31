@@ -1,19 +1,18 @@
 import { Suspense } from "react";
 import { withAuth } from "@workos-inc/authkit-nextjs";
 import { SignOutButton } from "../sign-out-button";
+import { Chat } from "./chat";
 
 export default function ChatPage() {
   return (
-    <main className="mx-auto flex w-full max-w-3xl flex-1 flex-col gap-4 p-8">
+    <main className="mx-auto flex h-dvh w-full max-w-3xl flex-col gap-4 p-6">
       <header className="flex items-center justify-between">
         <h1 className="text-2xl font-semibold">Chat</h1>
         <Suspense fallback={null}>
           <UserMenu />
         </Suspense>
       </header>
-      <section className="flex flex-1 items-center justify-center rounded-lg border border-dashed border-black/15 p-8 text-zinc-500 dark:border-white/20">
-        The chatbot goes here.
-      </section>
+      <Chat />
     </main>
   );
 }

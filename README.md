@@ -1,6 +1,10 @@
 # Oracle EPM Chatbot
 
-Next.js app with sign-in handled by [WorkOS AuthKit](https://workos.com/docs/authkit/nextjs).
+Chat with your Oracle EPM Cloud data (Planning, FCCS and related apps). Claude answers questions by calling the EPM REST API: it looks up members and substitution variables, reads data slices, and checks recent jobs. It only reads data; it can't change data or run jobs.
+
+Sign-in is handled by [WorkOS AuthKit](https://workos.com/docs/authkit/nextjs).
+
+If `EPM_URL` is empty, the chat uses built-in sample data (a "Vision" app), so you can try it before connecting EPM.
 
 ## Setup
 
@@ -10,7 +14,10 @@ Next.js app with sign-in handled by [WorkOS AuthKit](https://workos.com/docs/aut
    npm install
    ```
 
-2. Copy `.env.example` to `.env.local` and fill in the values from the [WorkOS dashboard](https://dashboard.workos.com) (API Keys page). Generate the cookie password with `openssl rand -base64 24`.
+2. Copy `.env.example` to `.env.local` and fill in:
+   - WorkOS values from the [WorkOS dashboard](https://dashboard.workos.com) (API Keys page). Generate the cookie password with `openssl rand -base64 24`.
+   - `ANTHROPIC_API_KEY` from the [Claude Console](https://platform.claude.com).
+   - Your EPM URL, default application and a user with read access. Classic pods use `identitydomain.username`; OCI pods use just the username. Or set `EPM_ACCESS_TOKEN` for OAuth.
 
 3. In the WorkOS dashboard, under your application's **Redirects** tab, set:
    - Redirect URI: `http://localhost:3000/callback`
@@ -31,5 +38,13 @@ Next.js app with sign-in handled by [WorkOS AuthKit](https://workos.com/docs/aut
 | `/chat`     | Chat page; requires sign-in                          |
 | `/sign-in`, `/sign-up` | Send the user to the WorkOS hosted login  |
 | `/callback` | WorkOS returns here after login                      |
+| `/api/chat` | Chat backend; streams Claude's answer (signed-in only) |
 
-Auth code: `src/proxy.ts` (session refresh) and `src/app/callback/route.ts`.
+## Code map
+
+- `src/app/api/chat/route.ts`: chat backend. Runs the Claude tool loop and streams the answer.
+- `src/lib/epm/tools.ts`: the EPM tools Claude can call.
+- `src/lib/epm/client.ts`: Oracle EPM REST API client.
+- `src/lib/epm/demo.ts`: sample data used when EPM isn't configured.
+- `src/app/chat/chat.tsx`: chat screen.
+- `src/proxy.ts`, `src/app/callback/route.ts`: WorkOS sign-in.
