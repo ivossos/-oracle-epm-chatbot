@@ -15,7 +15,7 @@ If `EPM_URL` is empty, the chat uses built-in sample data (a "Vision" app), so y
    ```
 
 2. Copy `.env.example` to `.env.local` and fill in:
-   - WorkOS values from the [WorkOS dashboard](https://dashboard.workos.com) (API Keys page). Generate the cookie password with `openssl rand -base64 24`.
+   - WorkOS values from the [WorkOS dashboard](https://dashboard.workos.com) (API Keys page). Generate the cookie password (required, 32+ characters) with `node -e "console.log(require('crypto').randomBytes(32).toString('base64'))"`.
    - `ANTHROPIC_API_KEY` from the [Claude Console](https://platform.claude.com).
    - Your EPM URL, default application and a user with read access. Classic pods use `identitydomain.username`; OCI pods use just the username. Or set `EPM_ACCESS_TOKEN` for OAuth.
 
