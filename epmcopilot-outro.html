@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="pt-BR"><head><meta charset="utf-8"><title>EPMCopilot</title>
+<style>
+:root{--accent:#4b4ef0;--deep:#2b2db8;--ink:#fff;--soft:rgba(255,255,255,.75);--font:"Inter",system-ui,sans-serif;}
+html,body{margin:0;height:100%}
+body{background:radial-gradient(120% 80% at 50% 40%,var(--accent),var(--deep));color:var(--ink);font-family:var(--font);display:grid;place-items:center;overflow:hidden}
+.wrap{display:grid;justify-items:center;gap:28px;text-align:center}
+.mark{width:180px;height:180px;border-radius:44px;background:#fff;color:var(--accent);display:grid;place-items:center;font-weight:800;font-size:58px;letter-spacing:-1px;
+  box-shadow:0 30px 80px rgba(0,0,0,.25);transform:scale(.4) rotate(-12deg);opacity:0;animation:pop .8s cubic-bezier(.2,1.4,.3,1) .15s forwards}
+.word{font-size:112px;font-weight:800;letter-spacing:-3px;line-height:1;opacity:0;transform:translateY(30px);animation:up .7s cubic-bezier(.2,.8,.2,1) .6s forwards}
+.word span{font-weight:400;opacity:.92}
+.tag{font-size:42px;color:var(--soft);opacity:0;transform:translateY(20px);animation:up .7s cubic-bezier(.2,.8,.2,1) 1.0s forwards}
+@keyframes pop{to{transform:none;opacity:1}}
+@keyframes up{to{transform:none;opacity:1}}
+</style></head>
+<body><div class="wrap"><div class="mark">EPM</div><div class="word">EPM<span>Copilot</span></div><div class="tag">Seu planejamento, em uma conversa.</div></div></body></html>
