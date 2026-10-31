@@ -1,0 +1,32 @@
+1
+00:00:00,400 --> 00:00:02,950
+{\an8}Conheça o Assistente EPM.
+
+2
+00:00:03,000 --> 00:00:05,500
+{\an8}Pergunte como ficou a receita do mês,
+
+3
+00:00:05,550 --> 00:00:08,550
+{\an8}e ele responde na hora,
+com o desvio por região.
+
+4
+00:00:08,600 --> 00:00:10,900
+{\an8}Peça para atualizar
+o forecast de novembro,
+
+5
+00:00:10,950 --> 00:00:13,100
+{\an8}e ele calcula o novo cenário.
+
+6
+00:00:13,150 --> 00:00:16,000
+{\an8}Com um clique,
+roda a regra de alocação.
+
+7
+00:00:16,050 --> 00:00:19,100
+{\an8}Seu planejamento,
+em uma conversa.
+
