@@ -1,24 +1,24 @@
 1
 00:00:00,200 --> 00:00:02,600
-<font face="Inter" size="56"><b>Como seus usuários fazem login?</b></font>
+Como seus usuários fazem login?
 
 2
 00:00:02,700 --> 00:00:06,550
-<font face="Inter" size="56"><b>Neste exemplo: 3.039 usuários.</b></font>
+Neste exemplo: 3.039 usuários.
 
 3
 00:00:06,600 --> 00:00:10,100
-<font face="Inter" size="56"><b>E-mail e senha lidera, com 41%.</b></font>
+E-mail e senha lidera, com 41%.
 
 4
 00:00:10,150 --> 00:00:13,050
-<font face="Inter" size="56"><b>Google vem logo atrás, com 28%.</b></font>
+Google vem logo atrás, com 28%.
 
 5
 00:00:13,100 --> 00:00:15,850
-<font face="Inter" size="56"><b>Passkey ainda é só 2%.</b></font>
+Passkey ainda é só 2%.
 
 6
 00:00:15,900 --> 00:00:18,600
-<font face="Inter" size="56"><b>Confira o seu painel no WorkOS!</b></font>
+Confira o seu painel no WorkOS!
 
