@@ -96,10 +96,7 @@ async function run(name: ToolName, input: unknown, config: EpmConfig | null): Pr
 
     case "query_data": {
       const i = schemas.query_data.parse(input);
-      if (!config) {
-        const scenario = i.pov.find((p) => /scenario/i.test(p.dimension))?.member ?? "Actual";
-        return demo.exportDataSlice(i.rows[0].members, i.columns[0].members, scenario);
-      }
+      if (!config) return demo.exportDataSlice(i.pov, i.rows, i.columns);
       return epm.exportDataSlice(config, needApp(i), i.cube, {
         suppressMissingBlocks: true,
         pov: { dimensions: i.pov.map((p) => p.dimension), members: i.pov.map((p) => [p.member]) },

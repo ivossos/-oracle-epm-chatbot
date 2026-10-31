@@ -18,8 +18,9 @@ const TOOL_LABELS: Record<string, string> = {
 };
 
 const SUGGESTIONS = [
-  "What was total revenue by month in Q1?",
-  "Compare Actual vs Budget net income for Q1",
+  "Net income by entity, Actual vs Budget, Q3 FY26",
+  "Revenue trend by month this year vs last year",
+  "Which operating expenses are over budget YTD?",
   "Did any recent jobs fail?",
 ];
 

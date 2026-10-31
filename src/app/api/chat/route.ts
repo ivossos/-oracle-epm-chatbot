@@ -23,7 +23,7 @@ How to work:
 
 const DEMO_NOTE = `
 
-EPM is not connected yet, so the tools return sample "Vision" demo data. Mention once that the numbers are sample data.`;
+EPM is not connected yet, so the tools return sample data from a demo FCCS application (FCCS_Demo, cube Consol, amounts in GBP). Mention once that the numbers are sample data.`;
 
 export async function POST(req: Request) {
   const { user } = await withAuth();
