@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Radar IA Brasil — motion 31/10/2026</title>
+<style>
+@font-face{font-family:"Newsreader";src:url(assets/fonts/newsreader-latin-opsz-normal.woff2) format("woff2");font-weight:200 800;font-style:normal}
+@font-face{font-family:"Newsreader";src:url(assets/fonts/newsreader-latin-opsz-italic.woff2) format("woff2");font-weight:200 800;font-style:italic}
+@font-face{font-family:"Plex";src:url(assets/fonts/ibm-plex-mono-latin-400-normal.woff2) format("woff2");font-weight:400}
+@font-face{font-family:"Plex";src:url(assets/fonts/ibm-plex-mono-latin-500-normal.woff2) format("woff2");font-weight:500}
+@font-face{font-family:"Plex";src:url(assets/fonts/ibm-plex-mono-latin-600-normal.woff2) format("woff2");font-weight:600}
+:root{
+  --paper:#0E1110;--sheet:#171B19;--inset:#1E2320;--ink:#E8E5DA;--mute:#8E948C;--rule:#2E3531;
+  --honey:#E0A63F;--honey-bg:#2A2317;--verde:#5CB98C;--verde-bg:#16261F;--ocre:#D6AA46;
+  --verm:#E2837A;--verm-bg:#2B1B19;--roxo:#A897DE;--roxo-bg:#221E33;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1080px;height:1920px;overflow:hidden;background:var(--paper)}
+body{font-family:"Newsreader",Georgia,serif;color:var(--ink);-webkit-font-smoothing:antialiased}
+.mono{font-family:"Plex",monospace}
+#stage{position:relative;width:1080px;height:1920px;overflow:hidden;
+  background:radial-gradient(1200px 900px at 85% 8%,rgba(224,166,63,.10),transparent 60%),
+             radial-gradient(900px 900px at 0% 100%,rgba(92,185,140,.07),transparent 60%),var(--paper)}
+#grid{position:absolute;inset:0;opacity:.35;
+  background-image:linear-gradient(rgba(232,229,218,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(232,229,218,.05) 1px,transparent 1px);
+  background-size:60px 60px;mask-image:linear-gradient(#000,transparent 85%)}
+/* header */
+#bars{position:absolute;top:56px;left:60px;right:60px;display:flex;gap:10px}
+#bars div{flex:1;height:6px;border-radius:3px;background:rgba(232,229,218,.16);overflow:hidden}
+#bars i{display:block;height:100%;width:0;background:var(--honey)}
+#head{position:absolute;top:96px;left:60px;right:60px;display:flex;justify-content:space-between;align-items:center;
+  font:500 26px "Plex";letter-spacing:.14em;color:var(--mute)}
+#head b{color:var(--ink);font-weight:600}
+#head .dot{display:inline-block;width:14px;height:14px;border-radius:50%;background:var(--honey);margin-right:14px;vertical-align:1px;box-shadow:0 0 0 0 rgba(224,166,63,.6)}
+/* scenes */
+.scene{position:absolute;left:60px;right:60px;top:200px;height:1240px;opacity:0}
+.kicker{display:flex;align-items:center;gap:22px;font:600 28px "Plex";letter-spacing:.16em;text-transform:uppercase}
+.num{font:600 120px "Plex";line-height:1;color:transparent;-webkit-text-stroke:2px var(--rule)}
+.chip{padding:12px 22px;border-radius:999px;border:2px solid currentColor;line-height:1}
+h2{font-weight:500;font-size:78px;line-height:1.06;letter-spacing:-.015em;margin-top:34px}
+h2 em{font-style:italic;color:var(--honey)}
+.card{background:var(--sheet);border:2px solid var(--rule);border-radius:28px;padding:40px 44px;margin-top:40px;position:relative;overflow:hidden}
+.src{position:absolute;left:0;right:0;bottom:0;display:flex;justify-content:space-between;align-items:center;
+  font:500 24px "Plex";color:var(--mute);letter-spacing:.04em}
+.tag{display:inline-flex;align-items:center;gap:12px;padding:10px 18px;border-radius:12px;font:600 22px "Plex";letter-spacing:.06em}
+.tag.fato{background:var(--verde-bg);color:var(--verde)}
+.tag.espec{background:var(--roxo-bg);color:var(--roxo)}
+.big{font-weight:600;font-size:200px;line-height:.9;letter-spacing:-.04em}
+.lbl{font:500 30px "Plex";color:var(--mute);letter-spacing:.04em;line-height:1.35}
+/* captions */
+#cap{position:absolute;left:60px;right:60px;top:1500px;height:300px;display:flex;align-items:center;justify-content:center;text-align:center}
+#capbox{font-size:66px;line-height:1.18;font-weight:500;letter-spacing:-.01em;text-wrap:balance}
+#capbox span{color:rgba(232,229,218,.38);transition:none}
+#capbox span.on{color:var(--ink)}
+#capbox span.now{color:var(--honey)}
+#foot{position:absolute;left:60px;right:60px;bottom:56px;display:flex;justify-content:space-between;font:500 24px "Plex";color:var(--mute);letter-spacing:.08em}
+/* intro */
+#radar{position:absolute;left:50%;top:40px;width:760px;height:760px;margin-left:-380px}
+.sweep{position:absolute;inset:0;border-radius:50%;background:conic-gradient(from 0deg,rgba(224,166,63,.0) 0deg,rgba(224,166,63,.0) 290deg,rgba(224,166,63,.55) 360deg)}
+.blip{position:absolute;width:26px;height:26px;margin:-13px;border-radius:50%;background:var(--honey);box-shadow:0 0 30px 6px rgba(224,166,63,.55)}
+#title{position:absolute;left:0;right:0;top:790px;text-align:center}
+#title h1{font-weight:500;font-size:128px;white-space:nowrap;line-height:1;letter-spacing:-.03em}
+#title h1 em{color:var(--honey)}
+#title p{font-size:46px;font-style:italic;color:var(--mute);margin-top:22px}
+#placar{position:absolute;left:0;right:0;top:1130px;display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+#placar div{background:var(--sheet);border:2px solid var(--rule);border-radius:22px;padding:22px 10px;text-align:center}
+#placar b{display:block;font:600 64px "Plex";color:var(--honey)}
+#placar span{font:500 20px "Plex";color:var(--mute);letter-spacing:.06em;text-transform:uppercase}
+#datepill{position:absolute;left:50%;top:1050px;transform:translateX(-50%);white-space:nowrap;font:600 28px "Plex";letter-spacing:.18em;
+  padding:14px 28px;border:2px solid var(--honey);border-radius:999px;color:var(--honey);background:var(--honey-bg)}
+</style>
+</head>
+<body>
+<div id="stage">
+  <div id="grid"></div>
+
+  <div id="bars"><div><i></i></div><div><i></i></div><div><i></i></div><div><i></i></div><div><i></i></div><div><i></i></div><div><i></i></div></div>
+  <div id="head"><div><span class="dot"></span><b>RADAR IA BRASIL</b></div><div>EDIÇÃO 31.10.2026</div></div>
+
+  <!-- 0 INTRO -->
+  <section class="scene" id="s0">
+    <svg id="radar" viewBox="0 0 760 760">
+      <defs><radialGradient id="rg"><stop offset="0" stop-color="#E0A63F" stop-opacity=".10"/><stop offset="1" stop-color="#E0A63F" stop-opacity="0"/></radialGradient></defs>
+      <circle cx="380" cy="380" r="370" fill="url(#rg)"/>
+      <g fill="none" stroke="#2E3531" stroke-width="2" class="rings">
+        <circle cx="380" cy="380" r="370"/><circle cx="380" cy="380" r="280"/><circle cx="380" cy="380" r="190"/><circle cx="380" cy="380" r="100"/>
+        <line x1="10" y1="380" x2="750" y2="380"/><line x1="380" y1="10" x2="380" y2="750"/>
+      </g>
+      <foreignObject x="10" y="10" width="740" height="740"><div class="sweep" xmlns="http://www.w3.org/1999/xhtml"></div></foreignObject>
+      <circle cx="380" cy="380" r="10" fill="#E0A63F"/>
+    </svg>
+    <div class="blip" style="left:370px;top:170px"></div>
+    <div class="blip" style="left:700px;top:330px"></div>
+    <div class="blip" style="left:600px;top:640px"></div>
+    <div class="blip" style="left:250px;top:560px"></div>
+    <div class="blip" style="left:420px;top:420px"></div>
+    <div id="title"><h1>Radar <em>IA</em> Brasil</h1><p>As notícias de IA que importam, checadas.</p></div>
+    <div id="datepill">SÁBADO · 31 OUT 2026</div>
+    <div id="placar">
+      <div><b data-n="5">0</b><span>itens</span></div>
+      <div><b data-n="5">0</b><span>fatos checados</span></div>
+      <div><b data-n="9">0</b><span>inferências</span></div>
+      <div><b data-n="8">0</b><span>barrados</span></div>
+    </div>
+  </section>
+
+  <!-- 1 SAC -->
+  <section class="scene" id="s1">
+    <div class="kicker"><span class="num">01</span><span class="chip" style="color:var(--verde)">Regulação</span></div>
+    <h2>Decreto do SAC vale a partir de <em>segunda, 2/11</em></h2>
+    <div class="card" id="sacflow" style="display:flex;align-items:center;justify-content:space-between;gap:20px">
+      <div class="node" id="n-ia" style="text-align:center;flex:1">
+        <div style="width:150px;height:150px;margin:0 auto;border-radius:36px;border:3px solid var(--honey);display:grid;place-items:center;font:600 64px Plex;color:var(--honey)">IA</div>
+        <div class="lbl" style="margin-top:20px">continua<br>liberada</div>
+      </div>
+      <svg width="200" height="40" viewBox="0 0 200 40"><line id="arrow" x1="0" y1="20" x2="180" y2="20" stroke="#E8E5DA" stroke-width="4" stroke-dasharray="180" stroke-dashoffset="180"/><path id="arrowhead" d="M170 6 L196 20 L170 34" fill="none" stroke="#E8E5DA" stroke-width="4" opacity="0"/></svg>
+      <div class="node" id="n-hu" style="text-align:center;flex:1">
+        <div style="width:150px;height:150px;margin:0 auto;border-radius:50%;border:3px solid var(--verde);display:grid;place-items:center">
+          <svg width="80" height="90" viewBox="0 0 80 90"><circle cx="40" cy="24" r="18" fill="#5CB98C"/><path d="M6 88c0-22 15-36 34-36s34 14 34 36z" fill="#5CB98C"/></svg>
+        </div>
+        <div class="lbl" style="margin-top:20px">humano em<br>tempo real</div>
+      </div>
+    </div>
+    <div class="card" id="sac80" data-late style="display:flex;align-items:center;gap:50px">
+      <svg width="270" height="270" viewBox="0 0 270 270" style="flex:none">
+        <circle cx="135" cy="135" r="115" fill="none" stroke="#2E3531" stroke-width="22"/>
+        <circle id="clock" cx="135" cy="135" r="115" fill="none" stroke="#E0A63F" stroke-width="22" stroke-linecap="round"
+          stroke-dasharray="722.6" stroke-dashoffset="722.6" transform="rotate(-90 135 135)"/>
+        <text id="clockt" x="135" y="152" text-anchor="middle" font-family="Plex" font-weight="600" font-size="58" fill="#E8E5DA">0 s</text>
+      </svg>
+      <div><div class="big" id="sacbig" style="font-size:200px;color:var(--honey)">0%</div>
+        <div class="lbl" style="font-size:34px;margin-top:10px">das ligações atendidas<br>em até <b style="color:var(--ink)">20 segundos</b></div></div>
+    </div>
+    <div class="src"><span>CryptoID · 30/10/2026</span><span class="tag fato">✓ FATO CHECADO</span></div>
+  </section>
+
+  <!-- 2 INFRA -->
+  <section class="scene" id="s2">
+    <div class="kicker"><span class="num">02</span><span class="chip" style="color:var(--ocre)">Infraestrutura</span></div>
+    <h2>Data centers disparam pedidos de <em>energia</em></h2>
+    <div class="card">
+      <div style="display:flex;align-items:baseline;gap:24px"><div class="big" id="gw" style="color:var(--honey)">0</div><div style="font:600 90px Plex;color:var(--honey)">GW</div></div>
+      <div class="lbl" style="margin-top:12px">em pedidos de acesso à rede elétrica · MME</div>
+      <div id="gwbars" style="display:grid;grid-template-columns:repeat(19,1fr);gap:8px;margin-top:40px"></div>
+      <div class="lbl" style="margin-top:18px;font-size:24px"><span style="color:var(--honey)">■</span> 7,1 GW já mapeados &nbsp; <span style="color:#3a423d">■</span> demais pedidos</div>
+    </div>
+    <div class="card" id="bi" data-late style="display:flex;align-items:center;justify-content:space-between">
+      <div><div class="lbl">potencial de investimento</div><div style="font-weight:600;font-size:130px;line-height:1;letter-spacing:-.03em;margin-top:10px">R$ <span id="bival">0</span> bi</div></div>
+    </div>
+    <div class="src"><span>Mirian Gasparin · 30/10/2026</span><span class="tag fato">✓ FATO CHECADO</span></div>
+  </section>
+
+  <!-- 3 MERCADO -->
+  <section class="scene" id="s3">
+    <div class="kicker"><span class="num">03</span><span class="chip" style="color:var(--roxo)">Mercado</span></div>
+    <h2>Anthropic pode estrear na bolsa com <em>nota especulativa</em></h2>
+    <div class="card" style="display:flex;gap:50px;align-items:center">
+      <div id="ladder" style="position:relative;width:380px;flex:none">
+        <div class="rung">AAA</div><div class="rung">AA</div><div class="rung">A</div><div class="rung">BBB</div>
+        <div id="igline" style="position:relative;height:0;border-top:4px dashed var(--verm);margin:16px 0"><span style="position:absolute;right:0;top:8px;font:600 20px Plex;color:var(--verm);letter-spacing:.08em">GRAU DE INVESTIMENTO</span></div>
+        <div class="rung hl">BB</div><div class="rung">B</div>
+        <div id="marker" style="position:absolute;left:-36px;top:0;width:0;height:0;border-left:26px solid var(--honey);border-top:18px solid transparent;border-bottom:18px solid transparent"></div>
+      </div>
+      <div>
+        <div class="lbl">expectativa após o IPO</div>
+        <div id="rating" style="font:600 180px Plex;line-height:1;color:var(--honey);margin-top:6px">BBB</div>
+        <div class="lbl" style="margin-top:14px">antes: grau de investimento<br>agora: <b style="color:var(--verm)">high yield</b></div>
+      </div>
+    </div>
+    <div class="src"><span>Financial Times via Jawlah · 31/10</span><span class="tag espec">◇ DEPENDE DO IPO</span></div>
+  </section>
+
+  <!-- 4 TRABALHO -->
+  <section class="scene" id="s4">
+    <div class="kicker"><span class="num">04</span><span class="chip" style="color:var(--honey)">Trabalho e adoção</span></div>
+    <h2>Web Summit: IA aumenta a <em>jornada</em> de trabalho</h2>
+    <div class="card" style="display:flex;align-items:center;gap:46px">
+      <svg width="300" height="300" viewBox="0 0 300 300" style="flex:none">
+        <circle cx="150" cy="150" r="120" fill="none" stroke="#2E3531" stroke-width="40"/>
+        <circle id="donut" cx="150" cy="150" r="120" fill="none" stroke="#E0A63F" stroke-width="40" stroke-dasharray="754" stroke-dashoffset="754" transform="rotate(-90 150 150)"/>
+        <text id="pct" x="150" y="172" text-anchor="middle" font-family="Plex" font-weight="600" font-size="70" fill="#E8E5DA">0%</text>
+      </svg>
+      <div class="lbl" style="font-size:36px;color:var(--ink)">dizem trabalhar<br><em style="font-family:Newsreader;color:var(--honey);font-size:48px">mais</em> com IA<div class="lbl" style="font-size:24px;margin-top:14px">1.455 entrevistados · amostra global</div></div>
+    </div>
+    <div class="card" id="forn" data-late style="display:flex;align-items:center;justify-content:space-between">
+      <div><div style="font:600 170px Plex;line-height:1;color:var(--honey)" id="forv">0,0</div><div class="lbl" style="margin-top:8px">fornecedores de IA<br>por usuário, em média</div></div>
+      <div style="display:flex;gap:18px" id="fdots">
+        <div class="fd" style="width:90px;height:90px;border-radius:50%;background:var(--honey)"></div>
+        <div class="fd" style="width:90px;height:90px;border-radius:50%;background:var(--honey)"></div>
+        <div class="fd" style="width:90px;height:90px;border-radius:50%;background:linear-gradient(90deg,var(--honey) 30%,#2E3531 30%)"></div>
+      </div>
+    </div>
+    <div class="src"><span>Brasil Inovador · 30/10/2026</span><span class="tag fato">✓ FATO CHECADO</span></div>
+  </section>
+
+  <!-- 5 GOIAS -->
+  <section class="scene" id="s5">
+    <div class="kicker"><span class="num">05</span><span class="chip" style="color:var(--verde)">Investimento público</span></div>
+    <h2>Goiás detalha aposta no centro de IA da <em>UFG</em></h2>
+    <div class="card">
+      <div class="lbl">investidos no Ceia-UFG</div>
+      <div style="font-weight:600;font-size:190px;line-height:1.05;letter-spacing:-.03em;color:var(--honey);margin-top:24px">R$ <span id="mi">0</span> mi</div>
+      <div style="display:flex;height:70px;border-radius:16px;overflow:hidden;margin-top:40px;background:#232825">
+        <div id="c1" style="width:0;background:var(--verde)"></div><div id="c2" style="width:0;background:var(--honey)"></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;margin-top:18px;font-size:24px" class="lbl"><span><span style="color:var(--verde)">■</span> convênio 1 · R$ 13 mi</span><span><span style="color:var(--honey)">■</span> convênio 2 · R$ 78 mi</span></div>
+    </div>
+    <div class="card" style="display:flex;justify-content:space-around;text-align:center" id="ufgstats">
+      <div><b style="font:600 64px Plex">+1.000</b><div class="lbl" style="font-size:24px">pesquisadores</div></div>
+      <div><b style="font:600 64px Plex">+100</b><div class="lbl" style="font-size:24px">clientes</div></div>
+      <div><b style="font:600 64px Plex">20 mil</b><div class="lbl" style="font-size:24px">licenças Gemini</div></div>
+    </div>
+    <div class="src"><span>Expressão Brasiliense · 31/10/2026</span><span class="tag fato">✓ FATO CHECADO</span></div>
+  </section>
+
+  <!-- 6 OUTRO -->
+  <section class="scene" id="s6" style="text-align:center">
+    <svg viewBox="0 0 760 760" width="460" height="460" style="margin-top:40px" id="radar2">
+      <g fill="none" stroke="#2E3531" stroke-width="3"><circle cx="380" cy="380" r="370"/><circle cx="380" cy="380" r="250"/><circle cx="380" cy="380" r="130"/></g>
+      <foreignObject x="10" y="10" width="740" height="740"><div class="sweep" id="sweep2" xmlns="http://www.w3.org/1999/xhtml"></div></foreignObject>
+      <circle cx="380" cy="380" r="14" fill="#E0A63F"/>
+    </svg>
+    <h2 style="margin-top:50px;font-size:86px">Edição completa,<br>com <em>fontes e checagem</em></h2>
+    <div id="url" style="margin-top:60px;font:600 50px Plex;color:var(--honey);letter-spacing:.01em;min-height:70px"></div>
+    <div id="cta" data-late style="display:inline-block;margin-top:50px;padding:34px 70px;border-radius:999px;background:var(--honey);color:#0E1110;font:600 48px Plex;letter-spacing:.06em">ASSINE GRÁTIS →</div>
+    <div class="lbl" style="margin-top:40px;font-size:26px">newsletter diária · grátis no seu e-mail</div>
+  </section>
+
+  <div id="cap"><div id="capbox"></div></div>
+  <div id="foot"><span>radar-ia-brasil.pages.dev</span><span>narração: ElevenLabs</span></div>
+</div>
+
+<script src="assets/gsap.min.js"></script>
+<script src="assets/words.js"></script>
+<script>
+// ---------- timing ----------
+const LEAD = 0.6;                      // audio starts at LEAD seconds
+const AUDIO_END = 73.36;
+const DURATION = LEAD + AUDIO_END + 1.4;
+const A = t => LEAD + t;               // audio time -> video time
+// scene starts (audio time, from transcript)
+const S = [0, 9.28, 26.56, 40.32, 50.08, 60.08, 66.24];
+const SEND = [...S.slice(1), AUDIO_END + 1.4];
+
+// ladder rungs styling
+document.querySelectorAll('.rung').forEach(r => Object.assign(r.style,
+  {font:'600 40px Plex',padding:'14px 22px',margin:'8px 0',borderRadius:'12px',background:'#1E2320',color:'#8E948C'}));
+// gw bars: 38 cells, first 7 (≈7.1) honey
+const gwb = document.getElementById('gwbars');
+for (let i = 0; i < 38; i++) { const d = document.createElement('div');
+  d.style.cssText = `height:38px;border-radius:6px;background:${i < 7 ? '#E0A63F' : '#3a423d'};opacity:0;transform:scaleY(.2)`; gwb.appendChild(d); }
+
+const tl = gsap.timeline({paused: true});
+const fmt = (v, d = 0) => v.toLocaleString('pt-BR', {minimumFractionDigits: d, maximumFractionDigits: d});
+function counter(el, to, at, dur = 1.1, dec = 0, suffix = '') {
+  const o = {v: 0};
+  tl.to(o, {v: to, duration: dur, ease: 'power2.out', onUpdate: () => el.textContent = fmt(o.v, dec) + suffix}, at);
+}
+
+// progress bars
+document.querySelectorAll('#bars i').forEach((b, i) =>
+  tl.fromTo(b, {width: '0%'}, {width: '100%', ease: 'none', duration: A(SEND[i]) - A(S[i])}, A(S[i])));
+// header pulse
+tl.to('#head .dot', {boxShadow: '0 0 0 16px rgba(224,166,63,0)', duration: 1.4, repeat: Math.floor(DURATION / 1.4), ease: 'power1.out'}, 0);
+
+// scene in/out
+S.forEach((s, i) => {
+  const sc = `#s${i}`, start = i === 0 ? 0.05 : A(s) - 0.15;
+  tl.fromTo(sc, {opacity: 0}, {opacity: 1, duration: 0.35}, start);
+  if (i < S.length - 1) tl.to(sc, {opacity: 0, y: -40, duration: 0.35, ease: 'power2.in'}, A(SEND[i]) - 0.5);
+  const kids = document.querySelectorAll(`${sc} > *:not([data-late])`);
+  if (i > 0) tl.from(kids, {y: 70, opacity: 0, duration: 0.6, stagger: 0.12, ease: 'power3.out'}, start);
+});
+
+// ---- INTRO ----
+tl.to('.sweep', {rotation: 360 * Math.ceil(DURATION / 3), duration: Math.ceil(DURATION / 3) * 3, ease: 'none'}, 0);
+tl.from('#radar', {scale: .6, opacity: 0, duration: 1.0, ease: 'expo.out'}, 0.1);
+tl.from('#radar .rings circle', {scale: 0, transformOrigin: '380px 380px', duration: 0.9, stagger: 0.08, ease: 'back.out(1.6)'}, 0.15);
+tl.from('#s0 .blip', {scale: 0, opacity: 0, duration: 0.5, stagger: 0.25, ease: 'back.out(3)'}, A(0.5));
+tl.from('#title h1', {y: 80, opacity: 0, duration: 0.8, ease: 'power3.out'}, A(0));
+tl.from('#title p', {y: 40, opacity: 0, duration: 0.7, ease: 'power3.out'}, A(1.8));
+tl.from('#datepill', {scale: .6, opacity: 0, duration: 0.6, ease: 'back.out(2)'}, A(6.0));
+tl.from('#placar div', {y: 60, opacity: 0, duration: 0.5, stagger: 0.1, ease: 'power3.out'}, A(6.6));
+document.querySelectorAll('#placar b').forEach((b, i) => counter(b, +b.dataset.n, A(6.8) + i * .1, 1.0));
+
+// ---- SAC ----
+tl.from('#n-ia', {scale: .5, opacity: 0, duration: .6, ease: 'back.out(2)'}, A(14.9));
+tl.to('#arrow', {strokeDashoffset: 0, duration: .7, ease: 'power2.inOut'}, A(17.7));
+tl.to('#arrowhead', {opacity: 1, duration: .2}, A(18.3));
+tl.from('#n-hu', {scale: .5, opacity: 0, duration: .6, ease: 'back.out(2)'}, A(19.4));
+tl.from('#sac80', {opacity: 0, y: 60, duration: .6, ease: 'power3.out'}, A(20.9));
+counter(document.getElementById('sacbig'), 80, A(21.2), 1.2, 0, '%');
+{ const o = {v: 0}, c = document.getElementById('clock'), t = document.getElementById('clockt');
+  tl.to(o, {v: 20, duration: 1.6, ease: 'power1.inOut', onUpdate: () => { c.style.strokeDashoffset = 722.6 * (1 - o.v / 20); t.textContent = Math.round(o.v) + ' s'; }}, A(24.9)); }
+
+// ---- INFRA ----
+counter(document.getElementById('gw'), 38, A(30.6), 1.4);
+tl.to('#gwbars div', {opacity: 1, scaleY: 1, duration: .35, stagger: .03, ease: 'back.out(2)'}, A(30.7));
+tl.from('#bi', {opacity: 0, y: 60, duration: .6, ease: 'power3.out'}, A(35.4));
+counter(document.getElementById('bival'), 159, A(36.4), 1.4);
+
+// ---- MERCADO ----
+{ const rungs = document.querySelectorAll('#ladder .rung'), m = document.getElementById('marker'), r = document.getElementById('rating');
+  const yOf = el => el.offsetTop + el.offsetHeight / 2 - 18;
+  tl.set(m, {y: yOf(rungs[3])}, A(40.3));
+  tl.from('#ladder .rung, #igline', {x: -40, opacity: 0, duration: .4, stagger: .07}, A(41.0));
+  tl.from(m, {opacity: 0, duration: .3}, A(44.4));
+  tl.to(m, {y: yOf(rungs[4]), duration: .9, ease: 'power3.inOut'}, A(46.6));
+  tl.call(() => r.textContent = 'BBB', null, A(46.5));
+  tl.call(() => r.textContent = 'BB', null, A(47.2));
+  tl.fromTo(r, {scale: 1}, {scale: 1.12, duration: .2, yoyo: true, repeat: 1, transformOrigin: 'left center'}, A(47.2));
+  tl.to(rungs[4], {background: '#2A2317', color: '#E0A63F', duration: .3}, A(47.3));
+}
+
+// ---- TRABALHO ----
+{ const o = {v: 0}, d = document.getElementById('donut'), p = document.getElementById('pct');
+  tl.to(o, {v: 60, duration: 1.3, ease: 'power2.out', onUpdate: () => { d.style.strokeDashoffset = 754 * (1 - o.v / 100); p.textContent = Math.round(o.v) + '%'; }}, A(52.1)); }
+tl.from('#forn', {opacity: 0, y: 60, duration: .6, ease: 'power3.out'}, A(55.5));
+counter(document.getElementById('forv'), 2.3, A(57.7), 1.1, 1);
+tl.from('#fdots .fd', {scale: 0, duration: .45, stagger: .25, ease: 'back.out(2.5)'}, A(57.7));
+
+// ---- GOIAS ----
+counter(document.getElementById('mi'), 91, A(61.3), 1.2);
+tl.to('#c1', {width: (13 / 91 * 100) + '%', duration: .7, ease: 'power3.out'}, A(62.0));
+tl.to('#c2', {width: (78 / 91 * 100) + '%', duration: .9, ease: 'power3.out'}, A(62.5));
+tl.from('#ufgstats > div', {y: 40, opacity: 0, duration: .5, stagger: .12}, A(63.4));
+
+// ---- OUTRO ----
+{ const url = 'radar-ia-brasil.pages.dev', el = document.getElementById('url'), o = {n: 0};
+  tl.to(o, {n: url.length, duration: 2.6, ease: 'none', onUpdate: () => el.textContent = url.slice(0, Math.round(o.n)) + (o.n < url.length ? '▍' : '')}, A(69.1)); }
+tl.from('#cta', {scale: .4, opacity: 0, duration: .7, ease: 'back.out(2.2)'}, A(72.2));
+tl.to('#cta', {scale: 1.06, duration: .5, yoyo: true, repeat: 3, ease: 'sine.inOut'}, A(73.0));
+tl.to('#cap', {opacity: 0, duration: .4}, A(AUDIO_END + 0.3));
+
+// ---------- captions (karaoke from ElevenLabs word timings) ----------
+const WORDS = window.WORDS.filter(w => w.type === 'word');
+const lines = []; let cur = [];
+WORDS.forEach((w, i) => {
+  cur.push(w);
+  const len = cur.map(x => x.text).join(' ').length;
+  const next = WORDS[i + 1];
+  const punct = /[.,:;!?]$/.test(w.text);
+  if (!next || len > 34 || (punct && len > 14) || /[.:!?]$/.test(w.text) || (next && next.start - w.end > 0.45)) { lines.push(cur); cur = []; }
+});
+const capbox = document.getElementById('capbox');
+let shownLine = -1;
+function renderCaption(vt) {
+  const t = vt - LEAD;
+  let li = lines.findIndex((l, i) => t >= l[0].start - 0.1 && (i === lines.length - 1 || t < lines[i + 1][0].start - 0.1));
+  if (t > AUDIO_END + 0.3) li = -1;
+  if (li !== shownLine) {
+    capbox.innerHTML = li < 0 ? '' : lines[li].map(w => `<span>${w.text}</span>`).join(' ');
+    shownLine = li;
+  }
+  if (li < 0) return;
+  capbox.querySelectorAll('span').forEach((s, k) => {
+    const w = lines[li][k];
+    s.className = t >= w.end ? 'on' : (t >= w.start - 0.03 ? 'now' : '');
+  });
+}
+
+// ---------- public API for renderer / preview ----------
+window.DURATION = DURATION;
+window.seek = t => { tl.seek(t, false); renderCaption(t); };
+window.ready = document.fonts.ready.then(() => { window.seek(0); return true; });
+
+// live preview with audio: open index.html?play
+if (location.search.includes('play')) {
+  const au = new Audio('assets/narracao.mp3');
+  document.body.addEventListener('click', () => {
+    const t0 = performance.now();
+    setTimeout(() => au.play(), LEAD * 1000);
+    (function loop() { const t = (performance.now() - t0) / 1000; window.seek(t); if (t < DURATION) requestAnimationFrame(loop); })();
+  }, {once: true});
+}
+</script>
+</body>
+</html>
