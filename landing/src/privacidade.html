@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Política de Privacidade | EPM Copilot</title>
+  <meta name="description" content="Como o EPM Copilot trata dados pessoais de quem agenda uma demo, conforme a LGPD.">
+  <link rel="canonical" href="{{site_url}}/privacidade">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <header class="header">
+    <div class="wrap">
+      <a class="logo" href="/">EPM Copilot</a>
+      <a class="btn btn--sm" href="{{calendly_url}}">Agendar demo de 30 min</a>
+    </div>
+  </header>
+  <main class="page">
+    <div class="wrap">
+      <h1>Política de Privacidade</h1>
+      <p class="muted">Última atualização: {{updated}}</p>
+<!--if:company_legal_name-->
+      <p>Esta política explica como {{company_legal_name}}<!--if:company_cnpj-->, CNPJ {{company_cnpj}},<!--endif:company_cnpj--> (“EPM Copilot”) trata os dados pessoais de quem visita este site e agenda uma demo, conforme a Lei nº 13.709/2018 (LGPD).</p>
+<!--endif:company_legal_name-->
+
+      <h2>Quais dados coletamos</h2>
+      <p>Ao agendar uma demo, você informa nome, e-mail corporativo e empresa. Também registramos dados de navegação agregados, sem identificar você individualmente.</p>
+
+      <h2>Para que usamos</h2>
+      <p>Usamos esses dados para marcar a demo, enviar o convite e as instruções de acesso, e falar com você sobre o EPM Copilot. A base legal é o seu consentimento e o procedimento preliminar a um contrato (art. 7º, I e V, da LGPD).</p>
+
+      <h2>Com quem compartilhamos</h2>
+      <p>Apenas com os fornecedores que operam o agendamento, o e-mail e a medição de acessos. Não vendemos dados pessoais.</p>
+
+      <h2>Dados do seu ambiente Oracle</h2>
+      <p>Durante a demo, o agente lê dados financeiros do seu ambiente de teste com um usuário somente leitura criado pela sua equipe. Não guardamos cópia desses dados depois da chamada. A sua equipe pode revogar o acesso a qualquer momento.</p>
+
+      <h2>Por quanto tempo guardamos</h2>
+      <p>Pelo tempo necessário para as finalidades acima, ou até você pedir a exclusão.</p>
+
+      <h2>Seus direitos</h2>
+      <p>Você pode pedir acesso, correção, portabilidade ou exclusão dos seus dados, e retirar o consentimento quando quiser<!--if:contact_email-->, pelo e-mail <a href="mailto:{{contact_email}}">{{contact_email}}</a><!--endif:contact_email-->.</p>
+
+      <p><a href="/">Voltar para a página inicial</a></p>
+    </div>
+  </main>
+</body>
+</html>

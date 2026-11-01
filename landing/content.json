@@ -1,0 +1,19 @@
+{
+  "_comment": "Fill these in with real, approved values only. Empty strings hide the related block. Run `node build.mjs --strict` before publishing.",
+  "site_url": "https://epmcopilot.com",
+  "calendly_url": "",
+  "contact_email": "",
+  "company_legal_name": "",
+  "company_cnpj": "",
+
+  "years_epm": "",
+
+  "result_value": "",
+  "result_label": "",
+  "result_source": "",
+
+  "screenshot_path": "",
+  "screenshot_alt": "",
+
+  "plausible_domain": ""
+}

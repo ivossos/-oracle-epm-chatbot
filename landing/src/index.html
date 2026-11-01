@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>EPM Copilot | Variações do FCCS explicadas em minutos</title>
+  <meta name="description" content="Para controllers no Oracle FCCS e EPBCS: em 30 minutos conectamos um agente somente leitura ao seu ambiente de teste e explicamos o último fechamento.">
+  <link rel="canonical" href="{{site_url}}/">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:site_name" content="EPM Copilot">
+  <meta property="og:url" content="{{site_url}}/">
+  <meta property="og:title" content="Pergunte ao seu FCCS por que o resultado variou">
+  <meta property="og:description" content="Demo de 30 minutos: um agente somente leitura no seu ambiente de teste FCCS explica as variações do último fechamento.">
+  <meta property="og:image" content="{{site_url}}/og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="EPM Copilot: pergunte ao seu FCCS por que o resultado variou.">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap">
+  <link rel="stylesheet" href="/styles.css">
+  <script>document.documentElement.classList.add('js')</script>
+<!--if:plausible_domain-->
+  <script defer data-domain="{{plausible_domain}}" src="https://plausible.io/js/script.js"></script>
+<!--endif:plausible_domain-->
+</head>
+<body>
+  <a class="skip" href="#conteudo">Pular para o conteúdo</a>
+
+  <header class="header">
+    <div class="wrap">
+      <a class="logo" href="/" aria-label="EPM Copilot, página inicial">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="1" y="1" width="22" height="22" rx="6" style="fill:var(--color-ink)"/><path d="M7 16V8h7M7 12h5M7 16h7" style="stroke:var(--color-accent)" stroke-width="2" fill="none" stroke-linecap="square"/></svg>
+        EPM Copilot
+      </a>
+      <a class="btn btn--sm" href="{{calendly_url}}" data-cta="header">Agendar demo de 30 min</a>
+    </div>
+  </header>
+
+  <main id="conteudo">
+    <!-- 1-3: Headline, subheadline, primary CTA -->
+    <section class="hero" aria-labelledby="titulo">
+      <div class="wrap">
+        <span class="eyebrow">Para controllers no Oracle FCCS e EPBCS</span>
+        <h1 id="titulo">Pergunte ao seu FCCS por que o resultado variou.</h1>
+        <p class="lead">Em uma chamada de 30 minutos, conectamos um agente somente leitura ao seu ambiente de teste. Você pergunta em português. Ele responde com a variação por entidade, conta e mês.</p>
+        <a class="btn" href="{{calendly_url}}" data-cta="hero">Agendar demo de 30 min</a>
+        <p class="cta-note small muted">Acesso somente leitura. Nada para instalar do seu lado. Gratuito.</p>
+        <p class="consent small muted">Ao agendar, você concorda com a nossa <a href="/privacidade">Política de Privacidade</a>.</p>
+      </div>
+    </section>
+
+<!--if:has_proof-->
+    <!-- 4: Proof bar -->
+    <section class="proof" aria-label="Credenciais">
+      <div class="wrap">
+        <ul>
+<!--if:years_epm-->
+          <li><strong>{{years_epm}} anos</strong><span class="small muted">implantando Oracle EPM</span></li>
+<!--endif:years_epm-->
+<!--if:result_value-->
+          <li><strong>{{result_value}}</strong><span class="small muted">{{result_label}}</span></li>
+<!--endif:result_value-->
+        </ul>
+      </div>
+    </section>
+<!--endif:has_proof-->
+
+    <!-- 5: Problem -->
+    <section class="section reveal" aria-labelledby="problema">
+      <div class="wrap">
+        <span class="eyebrow">O problema</span>
+        <h2 id="problema">O número está no FCCS. A explicação, não.</h2>
+        <hr class="rule">
+        <p>O fechamento termina e o CFO pergunta por que o EBITDA caiu contra o orçado. A resposta está no cubo. Chegar até ela é outra história.</p>
+        <p>Você abre o Smart View, monta a grade, exporta para o Excel e cruza entidade por entidade. Depois confere se a eliminação intercompany fechou. Depois escreve a explicação.</p>
+        <p>Na véspera da reunião de resultados, isso vira noite em claro. No mês seguinte, começa tudo de novo.</p>
+      </div>
+    </section>
+
+    <!-- 6: Cost of doing nothing -->
+    <section class="section section--surface reveal" aria-labelledby="custo">
+      <div class="wrap split">
+        <div>
+          <span class="eyebrow">O custo de esperar</span>
+          <h2 id="custo">Fechamento de 8 dias úteis é 96 dias úteis por ano.</h2>
+        </div>
+        <div>
+          <p class="big-number">96 dias úteis</p>
+          <p>São 8 dias úteis por fechamento, 12 vezes por ano. Quase 5 meses com a controladoria presa em conferência e explicação.</p>
+          <p>Cada dia a mais no fechamento é um dia a menos para analisar o negócio. E um dia a mais em que a diretoria decide com números do mês passado.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7: Solution -->
+    <section class="section reveal" aria-labelledby="produto">
+      <div class="wrap">
+        <span class="eyebrow">O que é o EPM Copilot</span>
+        <h2 id="produto">Um analista que lê o seu FCCS e responde em português.</h2>
+        <hr class="rule">
+        <p>O EPM Copilot é um agente conectado ao Oracle EPM Cloud pela API oficial da Oracle, com acesso somente leitura. Ele faz três coisas:</p>
+        <ul class="cards">
+          <li class="card">
+            <h3>Explica variações</h3>
+            <p>Pergunte “por que as despesas administrativas subiram contra o orçado?”. Receba a quebra por entidade, conta e mês, com os valores do cubo.</p>
+            <p class="pain">Substitui: grade no Smart View e cruzamento no Excel.</p>
+          </li>
+          <li class="card">
+            <h3>Confere a consolidação</h3>
+            <p>Aponta saldos intercompany que não batem e entidades com consolidação pendente, antes da revisão.</p>
+            <p class="pain">Substitui: conferência manual de eliminações.</p>
+          </li>
+          <li class="card">
+            <h3>Abre o cubo para o time</h3>
+            <p>Qualquer analista consulta FCCS e EPBCS em português, sem montar grade nem decorar a dimensionalidade.</p>
+            <p class="pain">Substitui: pedidos ao único especialista em Smart View.</p>
+          </li>
+        </ul>
+<!--if:screenshot_path-->
+        <img class="shot" src="{{screenshot_path}}" alt="{{screenshot_alt}}" width="1120" height="700" loading="lazy">
+<!--endif:screenshot_path-->
+      </div>
+    </section>
+
+    <!-- 8: How it works -->
+    <section class="section section--surface reveal" aria-labelledby="como">
+      <div class="wrap">
+        <span class="eyebrow">Como funciona a demo</span>
+        <h2 id="como">Três passos, uma chamada.</h2>
+        <ol class="steps">
+          <li><p><strong>Sua TI cria um usuário somente leitura no ambiente de teste.</strong></p></li>
+          <li><p><strong>Na chamada de 30 minutos, conectamos o agente. Nada é instalado aí.</strong></p></li>
+          <li><p><strong>Você pergunta sobre o último fechamento e vê a variação explicada.</strong></p></li>
+        </ol>
+        <p>Ao final, você tem a análise do seu próprio fechamento, com os seus números, para levar ao CFO.</p>
+      </div>
+    </section>
+
+    <!-- 9: Results and proof -->
+    <section class="section reveal" aria-labelledby="resultados">
+      <div class="wrap">
+        <span class="eyebrow">Resultados</span>
+<!--if:result_value-->
+        <h2 id="resultados">O que mudou no fechamento.</h2>
+        <hr class="rule">
+        <p class="big-number">{{result_value}}</p>
+        <p>{{result_label}}</p>
+        <p class="small muted">Fonte: {{result_source}}</p>
+<!--endif:result_value-->
+<!--if:no_result-->
+        <h2 id="resultados">A prova é o seu próprio cubo.</h2>
+        <hr class="rule">
+        <p>Não mostramos um caso genérico. Na demo, o agente roda sobre os dados do seu ambiente de teste, com as suas entidades e as suas contas.</p>
+        <p>Você vê a resposta e confere cada número no FCCS, na mesma chamada.</p>
+<!--endif:no_result-->
+<!--if:years_epm-->
+        <p>Quem está do outro lado da chamada implanta Oracle EPM há {{years_epm}} anos.</p>
+<!--endif:years_epm-->
+      </div>
+    </section>
+
+    <!-- 10: Objections -->
+    <section class="section section--surface reveal" aria-labelledby="duvidas">
+      <div class="wrap">
+        <span class="eyebrow">Perguntas que todo controller faz</span>
+        <h2 id="duvidas">Segurança, TI e consultoria.</h2>
+        <ul class="cards">
+          <li class="card">
+            <h3>Meus dados ficam seguros?</h3>
+            <p>O agente usa um usuário com perfil de visualização que a sua equipe cria e revoga quando quiser. Ele não grava, não altera dados e não executa regras. A demo é feita no ambiente de teste, não em produção.</p>
+          </li>
+          <li class="card">
+            <h3>A TI vai aprovar?</h3>
+            <p>Nada é instalado na sua rede ou nas máquinas do time. A conexão usa a API REST oficial do Oracle EPM Cloud, com o usuário que a TI criar. Cada acesso fica registrado no log de auditoria do próprio Oracle.</p>
+          </li>
+          <li class="card">
+            <h3>Já temos consultoria para isso.</h3>
+            <p>A consultoria constrói e mantém a aplicação. O agente responde às perguntas do dia a dia do fechamento, na hora, sem abrir chamado. Os dois trabalham juntos.</p>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 11: Offer recap -->
+    <section class="section reveal" aria-labelledby="oferta">
+      <div class="wrap">
+        <span class="eyebrow">O que você recebe</span>
+        <h2 id="oferta">Uma demo de 30 minutos com os seus dados.</h2>
+        <hr class="rule">
+        <ul class="checklist">
+          <li>Custo: zero. Sem contrato e sem compromisso.</li>
+          <li>Você escolhe o horário no calendário e recebe o convite por e-mail.</li>
+          <li>O convite traz o passo a passo para a TI criar o usuário somente leitura.</li>
+          <li>Na chamada, conectamos o agente e analisamos o seu último fechamento.</li>
+          <li>Depois, você decide se quer seguir. Se não, a TI revoga o usuário.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 12: Final CTA -->
+    <section class="band" aria-labelledby="final">
+      <div class="wrap">
+        <h2 id="final">Veja o seu <span class="accent">último fechamento</span> explicado em 30 minutos.</h2>
+        <p>Acesso somente leitura. Nada para instalar do seu lado. Gratuito.</p>
+        <a class="btn btn--on-ink" href="{{calendly_url}}" data-cta="final">Agendar demo de 30 min</a>
+        <p class="small consent">Ao agendar, você concorda com a nossa <a href="/privacidade">Política de Privacidade</a>.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap">
+      <span>© {{year}} EPM Copilot<!--if:company_legal_name--> · {{company_legal_name}}<!--endif:company_legal_name--></span>
+      <ul>
+        <li><a href="/privacidade">Política de Privacidade</a></li>
+<!--if:contact_email-->
+        <li><a href="mailto:{{contact_email}}">{{contact_email}}</a></li>
+<!--endif:contact_email-->
+      </ul>
+    </div>
+  </footer>
+
+  <script>
+    // Conversion event on every primary CTA click.
+    document.querySelectorAll('[data-cta]').forEach(function (el) {
+      el.addEventListener('click', function () {
+        var where = el.getAttribute('data-cta');
+        (window.dataLayer = window.dataLayer || []).push({ event: 'agendar_demo', cta_position: where });
+        if (window.plausible) window.plausible('Agendar demo', { props: { posicao: where } });
+      });
+    });
+    // Fade sections in once. Content stays visible if the observer is missing.
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) { e.target.classList.add('is-visible'); io.unobserve(e.target); }
+        });
+      }, { rootMargin: '0px 0px -10% 0px' });
+      document.querySelectorAll('.reveal').forEach(function (el) { io.observe(el); });
+    } else {
+      document.querySelectorAll('.reveal').forEach(function (el) { el.classList.add('is-visible'); });
+    }
+  </script>
+</body>
+</html>
