@@ -68,6 +68,34 @@ h2 em{font-style:italic;color:var(--honey)}
 #placar span{font:500 20px "Plex";color:var(--mute);letter-spacing:.06em;text-transform:uppercase}
 #datepill{position:absolute;left:50%;top:1050px;transform:translateX(-50%);white-space:nowrap;font:600 28px "Plex";letter-spacing:.18em;
   padding:14px 28px;border:2px solid var(--honey);border-radius:999px;color:var(--honey);background:var(--honey-bg)}
+
+/* ---------- 16:9 layout (index.html?wide) ---------- */
+.wide html,html.wide,.wide body,.wide #stage{width:1920px;height:1080px}
+.wide #bars{top:40px;left:80px;right:80px}
+.wide #head{top:68px;left:80px;right:80px}
+.wide .scene{left:80px;right:80px;top:150px;height:720px;display:flex;gap:80px}
+.wide .col.left{flex:0 0 780px;position:relative;height:100%}
+.wide .col.right{flex:1;display:flex;flex-direction:column;justify-content:center;gap:28px}
+.wide .col.right .card{margin-top:0}
+.wide h2{font-size:84px;margin-top:40px}
+.wide .src{bottom:10px}
+.wide .big{font-size:170px}
+.wide #s0{display:block}
+.wide #radar{left:100px;margin-left:0;top:-20px;width:720px;height:720px}
+.wide .blip{margin:-73px -13px -13px -13px}
+.wide #title{left:900px;right:0;top:110px;text-align:left}
+.wide #title h1{font-size:120px}
+.wide #title p{font-size:42px}
+.wide #datepill{left:900px;top:390px;transform:none}
+.wide #placar{left:900px;right:0;top:480px}
+.wide #s6{display:block;text-align:left;padding-left:640px}
+.wide #radar2{position:absolute;left:40px;top:90px;margin:0!important;width:520px;height:520px}
+.wide #s6 h2{margin-top:70px!important}
+.wide #cap{left:160px;right:160px;top:880px;height:140px}
+.wide #capbox{font-size:54px}
+.wide #igline{margin:14px 0 44px!important}
+.wide .src span:first-child{white-space:nowrap}
+.wide #foot{bottom:26px;left:80px;right:80px;font-size:20px}
 </style>
 </head>
 <body>
@@ -233,6 +261,17 @@ h2 em{font-style:italic;color:var(--honey)}
 <script src="assets/gsap.min.js"></script>
 <script src="assets/words.js"></script>
 <script>
+// 16:9: split news scenes into a text column and a cards column
+const WIDE = location.search.includes('wide');
+if (WIDE) {
+  document.documentElement.classList.add('wide');
+  for (let i = 1; i <= 5; i++) {
+    const sc = document.getElementById('s' + i), L = document.createElement('div'), R = document.createElement('div');
+    L.className = 'col left'; R.className = 'col right';
+    [...sc.children].forEach(el => (el.classList.contains('card') ? R : L).appendChild(el));
+    sc.append(L, R);
+  }
+}
 // ---------- timing ----------
 const LEAD = 0.6;                      // audio starts at LEAD seconds
 const AUDIO_END = 73.36;
@@ -268,7 +307,7 @@ S.forEach((s, i) => {
   const sc = `#s${i}`, start = i === 0 ? 0.05 : A(s) - 0.15;
   tl.fromTo(sc, {opacity: 0}, {opacity: 1, duration: 0.35}, start);
   if (i < S.length - 1) tl.to(sc, {opacity: 0, y: -40, duration: 0.35, ease: 'power2.in'}, A(SEND[i]) - 0.5);
-  const kids = document.querySelectorAll(`${sc} > *:not([data-late])`);
+  const kids = document.querySelectorAll(`${sc} > *:not(.col):not([data-late]), ${sc} > .col > *:not([data-late])`);
   if (i > 0) tl.from(kids, {y: 70, opacity: 0, duration: 0.6, stagger: 0.12, ease: 'power3.out'}, start);
 });
 

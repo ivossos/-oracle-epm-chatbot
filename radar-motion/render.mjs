@@ -10,8 +10,10 @@ import path from 'node:path';
 const args = process.argv.slice(2);
 const opt = (k, d) => { const i = args.indexOf(k); return i >= 0 ? args[i + 1] : d; };
 const FPS = +opt('--fps', 30);
-const OUT = opt('--out', 'radar-ia-brasil-2026-10-31.mp4');
+const OUT = opt('--out', args.includes('--wide') ? 'radar-ia-brasil-2026-10-31-16x9.mp4' : 'radar-ia-brasil-2026-10-31.mp4');
 const PREVIEW = opt('--preview', null);
+const WIDE = args.includes('--wide');
+const VW = WIDE ? 1920 : 1080, VH = WIDE ? 1080 : 1920;
 const ROOT = path.dirname(new URL(import.meta.url).pathname);
 
 // tiny static server (fonts need http, not file://)
@@ -23,8 +25,8 @@ const server = http.createServer((req, res) => {
 const port = server.address().port;
 
 const browser = await chromium.launch();
-const page = await browser.newPage({ viewport: { width: 1080, height: 1920 } });
-await page.goto(`http://127.0.0.1:${port}/index.html`);
+const page = await browser.newPage({ viewport: { width: VW, height: VH } });
+await page.goto(`http://127.0.0.1:${port}/index.html${WIDE ? '?wide' : ''}`);
 await page.evaluate(() => window.ready);
 const duration = await page.evaluate(() => window.DURATION);
 
@@ -32,7 +34,7 @@ if (PREVIEW) {
   fs.mkdirSync(path.join(ROOT, 'preview'), { recursive: true });
   for (const t of PREVIEW.split(',').map(Number)) {
     await page.evaluate(t => window.seek(t), t);
-    await page.screenshot({ path: path.join(ROOT, 'preview', `t${String(t).padStart(5, '0')}.png`) });
+    await page.screenshot({ path: path.join(ROOT, 'preview', `${WIDE ? 'w' : 't'}${String(t).padStart(5, '0')}.png`) });
   }
   await browser.close(); server.close(); process.exit(0);
 }
