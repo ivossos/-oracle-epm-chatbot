@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>EPM Copilot — vídeo de lançamento</title>
+<style>
+@font-face{font-family:"Caslon";src:url(fonts/libre-caslon-text-latin-400-normal.woff2) format("woff2");font-weight:400;font-style:normal}
+@font-face{font-family:"Caslon";src:url(fonts/libre-caslon-text-latin-400-italic.woff2) format("woff2");font-weight:400;font-style:italic}
+@font-face{font-family:"Roboto";src:url(fonts/roboto-latin-300-normal.woff2) format("woff2");font-weight:300}
+@font-face{font-family:"Roboto";src:url(fonts/roboto-latin-400-normal.woff2) format("woff2");font-weight:400}
+@font-face{font-family:"Roboto";src:url(fonts/roboto-latin-500-normal.woff2) format("woff2");font-weight:500}
+@font-face{font-family:"Roboto";src:url(fonts/roboto-latin-700-normal.woff2) format("woff2");font-weight:700}
+@font-face{font-family:"Mono";src:url(fonts/roboto-mono-latin-400-normal.woff2) format("woff2");font-weight:400}
+@font-face{font-family:"Mono";src:url(fonts/roboto-mono-latin-500-normal.woff2) format("woff2");font-weight:500}
+:root{
+  --cream:#F6F4EF; --ink:#0D1321; --navy:#13233F; --logo:#1B2A3B;
+  --crimson:#B01139; --amber:#F2A71C; --teal:#0F9F87; --slate:#627084; --rule:#D9DEE5;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1920px;height:1080px;overflow:hidden;background:var(--ink)}
+#stage{position:relative;width:1920px;height:1080px;overflow:hidden;font-family:Roboto,sans-serif;color:var(--ink)}
+.scene{position:absolute;inset:0;display:none;overflow:hidden}
+.inner{position:absolute;inset:0;padding:110px 130px;transform-origin:50% 50%}
+.serif{font-family:Caslon,serif;font-weight:400;letter-spacing:-0.02em}
+.mono{font-family:Mono,monospace;letter-spacing:.18em;text-transform:uppercase}
+.kicker{font-family:Mono,monospace;font-size:24px;letter-spacing:.2em;text-transform:uppercase;color:var(--crimson)}
+.dark{background:var(--ink);color:var(--cream)}
+.navy{background:var(--navy);color:var(--cream)}
+.cream{background:var(--cream);color:var(--ink)}
+.crim{background:var(--crimson);color:var(--cream)}
+.grid::before{content:"";position:absolute;inset:0;
+  background-image:linear-gradient(rgba(246,244,239,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(246,244,239,.045) 1px,transparent 1px);
+  background-size:96px 96px;background-position:-1px -1px}
+.ch{opacity:0}
+.caret{display:inline-block;width:.06em;height:.95em;background:var(--amber);vertical-align:-.1em;margin-left:.04em}
+
+/* S1 */
+#s1 .q{font-size:108px;line-height:1.1;max-width:1500px;margin-top:150px}
+#s1 .steps{position:absolute;left:130px;right:130px;bottom:120px;display:flex;gap:0;border-top:1px solid rgba(246,244,239,.25)}
+#s1 .step{flex:1;padding:34px 30px 0 0;font-size:34px;color:rgba(246,244,239,.85)}
+#s1 .step b{display:block;font-family:Mono,monospace;font-weight:400;font-size:22px;letter-spacing:.2em;color:var(--amber);margin-bottom:14px}
+#s1 .clock{position:absolute;right:130px;top:110px;font-family:Mono,monospace;font-size:24px;letter-spacing:.2em;color:rgba(246,244,239,.7)}
+#s1 .clock span{color:var(--amber)}
+
+/* S2 */
+#s2 h2{font-size:92px;line-height:1.08;max-width:1300px;margin-top:34px}
+#s2 .cols{position:absolute;left:130px;right:130px;bottom:120px;display:flex;border-top:1px solid var(--ink)}
+#s2 .col{flex:1;padding:44px 50px 0 0}
+#s2 .col + .col{padding-left:50px;border-left:1px solid var(--rule)}
+#s2 .n{font-family:Mono,monospace;font-size:26px;letter-spacing:.2em;color:var(--amber)}
+#s2 .t{font-family:Caslon,serif;font-size:50px;line-height:1.14;margin-top:22px;letter-spacing:-.01em}
+#s2 .d{font-size:27px;line-height:1.45;color:var(--slate);margin-top:20px}
+
+/* S3 */
+#s3{background:var(--logo)}
+#s3 .wrap{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+#s3 img{width:1180px;display:block;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 7%,#000 93%,transparent 100%),linear-gradient(180deg,transparent 0,#000 14%,#000 86%,transparent 100%);-webkit-mask-composite:source-in;mask-composite:intersect}
+#s3 .tag{font-family:Caslon,serif;font-size:60px;color:var(--cream);margin-top:10px;letter-spacing:-.01em}
+#s3 .tag i{color:#D9B24A}
+#s3 .mods{margin-top:50px;font-family:Mono,monospace;font-size:26px;letter-spacing:.24em;color:rgba(246,244,239,.7)}
+#s3 .rule{width:900px;height:1px;background:rgba(246,244,239,.25);margin-top:44px;transform-origin:50% 50%}
+
+/* S4 */
+#s4 .left{position:absolute;left:130px;top:110px;width:560px}
+#s4 .left .kicker{color:rgba(246,244,239,.7)}
+#s4 h2{font-size:66px;line-height:1.1;margin-top:30px}
+#s4 .how{margin-top:70px;border-top:1px solid rgba(246,244,239,.25)}
+#s4 .how div{padding:26px 0;border-bottom:1px solid rgba(246,244,239,.14);font-size:30px;color:rgba(246,244,239,.5);display:flex;gap:24px;align-items:baseline}
+#s4 .how b{font-family:Mono,monospace;font-weight:400;font-size:22px;letter-spacing:.2em;color:var(--amber)}
+#s4 .how div span{font-family:Caslon,serif;font-size:38px}
+#s4 .panel{position:absolute;left:770px;right:110px;top:110px;bottom:150px;border:1px solid rgba(246,244,239,.75);background:#0F1C33}
+#s4 .bar{height:60px;background:var(--cream);color:var(--slate);font-family:Mono,monospace;font-size:19px;letter-spacing:.2em;display:flex;align-items:center;padding:0 32px}
+#s4 .body{padding:38px 44px}
+#s4 .lab{font-family:Mono,monospace;font-size:19px;letter-spacing:.2em;color:var(--amber)}
+#s4 .prompt{font-family:Caslon,serif;font-size:46px;line-height:1.18;margin-top:16px;min-height:112px}
+#s4 .ans{font-size:26.5px;line-height:1.5;color:rgba(246,244,239,.9);margin-top:14px}
+#s4 .ans .w{opacity:0}
+#s4 .ans em{font-style:normal;color:var(--amber);font-weight:500}
+#s4 .drivers{margin-top:26px}
+#s4 .drv{display:flex;align-items:center;gap:22px;margin-top:13px;font-size:23px;color:rgba(246,244,239,.85)}
+#s4 .drv .name{width:300px}
+#s4 .drv .track{flex:1;height:22px;position:relative}
+#s4 .drv .fill{position:absolute;left:0;top:0;bottom:0;transform-origin:0 50%}
+#s4 .drv .val{width:150px;text-align:right;font-family:Mono,monospace;font-size:22px}
+#s4 .stats{position:absolute;left:44px;right:44px;bottom:34px;display:flex;border-top:1px solid rgba(246,244,239,.25)}
+#s4 .stat{flex:1;padding-top:20px}
+#s4 .stat .v{font-family:Caslon,serif;font-size:62px;line-height:1}
+#s4 .stat .l{font-family:Mono,monospace;font-size:17px;letter-spacing:.2em;color:rgba(246,244,239,.6);margin-top:10px}
+#s4 .foot{position:absolute;left:770px;right:110px;bottom:92px;font-family:Mono,monospace;font-size:19px;letter-spacing:.18em;color:rgba(246,244,239,.55);text-transform:uppercase}
+
+/* S5 */
+#s5 h2{font-size:92px;line-height:1.08;max-width:1400px;margin-top:34px}
+#s5 .cards{position:absolute;left:130px;right:130px;bottom:190px;display:flex;gap:36px}
+#s5 .card{flex:1;background:#fff;border:1px solid var(--rule);padding:44px 44px 50px;position:relative}
+#s5 .card .top{position:absolute;left:-1px;right:-1px;top:-1px;height:8px;background:var(--crimson);transform-origin:0 50%}
+#s5 .card .m{font-family:Mono,monospace;font-size:22px;letter-spacing:.22em;color:var(--crimson)}
+#s5 .card .t{font-family:Caslon,serif;font-size:58px;margin-top:20px;letter-spacing:-.01em}
+#s5 .card .d{font-size:29px;line-height:1.42;color:var(--slate);margin-top:18px}
+#s5 .native{position:absolute;left:130px;bottom:110px;font-family:Mono,monospace;font-size:23px;letter-spacing:.2em;color:var(--slate);text-transform:uppercase}
+#s5 .native b{color:var(--ink);font-weight:500}
+
+/* S6 */
+#s6 .kicker{color:rgba(246,244,239,.8)}
+#s6 h2{font-size:100px;line-height:1.06;max-width:1350px;margin-top:34px}
+#s6 .items{position:absolute;left:130px;right:130px;bottom:120px;display:flex;border-top:1px solid rgba(246,244,239,.4)}
+#s6 .it{flex:1;padding:42px 50px 0 0}
+#s6 .it + .it{padding-left:50px;border-left:1px solid rgba(246,244,239,.25)}
+#s6 .it svg{width:54px;height:54px;display:block}
+#s6 .it .t{font-family:Caslon,serif;font-size:46px;line-height:1.16;margin-top:26px}
+#s6 .it .d{font-size:26px;line-height:1.45;color:rgba(246,244,239,.85);margin-top:18px}
+
+/* S7 */
+#s7 .logo{position:absolute;left:130px;top:90px;width:400px}
+#s7 .hero{position:absolute;left:130px;top:300px}
+#s7 .l1{font-size:150px;line-height:1.04}
+#s7 .l2{font-size:150px;line-height:1.04;font-style:italic;color:var(--crimson)}
+#s7 .l2 u{text-decoration:none;color:var(--amber);font-style:normal}
+#s7 .cta{position:absolute;left:130px;bottom:120px;display:flex;align-items:center;gap:50px}
+#s7 .btn{background:var(--amber);color:var(--ink);font-size:38px;font-weight:500;padding:30px 54px}
+#s7 .url{font-family:Mono,monospace;font-size:36px;letter-spacing:.1em;color:var(--ink)}
+#s7 .chips{position:absolute;right:130px;top:128px;font-family:Mono,monospace;font-size:22px;letter-spacing:.2em;color:var(--crimson);text-transform:uppercase}
+</style>
+</head>
+<body>
+<div id="stage">
+
+<!-- S1 hook -->
+<section class="scene dark grid" id="s1"><div class="inner">
+  <div class="kicker" data-in="0.15" style="color:rgba(246,244,239,.7)">Fechamento · Realizado × Orçado</div>
+  <div class="clock" data-in="2.2" data-anim="fade">Tempo até a resposta <span id="clock">00:00</span></div>
+  <div class="q serif" data-type data-in="0.45" data-cps="26">Por que o OPEX ficou 7,4% acima do orçado?</div>
+  <div class="steps">
+    <div class="step" data-in="2.2"><b>01</b>Abrir o Smart View</div>
+    <div class="step" data-in="2.7"><b>02</b>Navegar dimensões</div>
+    <div class="step" data-in="3.2"><b>03</b>Cruzar versões</div>
+    <div class="step" data-in="3.7"><b>…</b>Horas depois, uma resposta</div>
+  </div>
+</div></section>
+
+<!-- S2 problem -->
+<section class="scene cream" id="s2"><div class="inner">
+  <div class="kicker" data-in="0.3">O problema</div>
+  <h2 class="serif" data-in="0.45">Três gargalos que nenhum relatório novo resolve</h2>
+  <div class="cols" data-in="0.3" data-anim="fade">
+    <div class="col" data-in="0.6"><div class="n">01</div><div class="t">Variação Realizado × Orçado leva horas</div><div class="d">Smart View, dimensões e versões para responder uma pergunta de uma frase.</div></div>
+    <div class="col" data-in="2.9"><div class="n">02</div><div class="t">Comentários de fechamento refeitos na mão</div><div class="d">Todo mês, a narrativa é remontada a partir de exports colados em planilhas.</div></div>
+    <div class="col" data-in="6.7"><div class="n">03</div><div class="t">O conhecimento fica com 1–2 pessoas</div><div class="d">Hierarquias, contas e centros de resultado vivem na cabeça de poucos especialistas.</div></div>
+  </div>
+</div></section>
+
+<!-- S3 reveal -->
+<section class="scene grid" id="s3"><div class="inner"><div class="wrap">
+  <img src="assets/epmcopilot-logo.png" alt="" data-in="0.35" data-anim="scale" data-dur="1.1">
+  <div class="rule" data-in="1.6" data-anim="line" data-dur="0.9"></div>
+  <div class="tag" data-in="2.5">Agentes de IA para o <i>Oracle EPM</i></div>
+  <div class="mods" data-in="3.1" data-anim="fade">FCCS · PLANNING · PCM · ESSBASE · HFM</div>
+</div></div></section>
+
+<!-- S4 demo -->
+<section class="scene navy grid" id="s4"><div class="inner" style="padding:0">
+  <div class="left">
+    <div class="kicker" data-in="0.3">Como funciona</div>
+    <h2 class="serif" data-in="0.45">Uma pergunta, a resposta e os números por trás</h2>
+    <div class="how" data-in="0.9" data-anim="fade">
+      <div id="how1"><b>01</b><span>Conectar</span></div>
+      <div id="how2"><b>02</b><span>Perguntar</span></div>
+      <div id="how3"><b>03</b><span>Analisar</span></div>
+      <div id="how4"><b>04</b><span>Automatizar</span></div>
+    </div>
+  </div>
+  <div class="panel" data-in="0.35" data-anim="up" data-dur="0.9">
+    <div class="bar">EPM-COPILOT · FCCS · EXEMPLO ILUSTRATIVO</div>
+    <div class="body">
+      <div class="lab">&gt; PROMPT</div>
+      <div class="prompt" data-type data-in="1.0" data-cps="24">Explique por que o OPEX ficou 7,4% acima do orçado no Q3.</div>
+      <div class="lab" data-in="4.1" data-anim="fade" style="margin-top:26px">&lt; RESPOSTA ILUSTRATIVA</div>
+      <div class="ans" id="ans">O desvio de <em>7,4%</em> concentra-se em dois drivers — serviços profissionais e manutenção predial no Sudeste — parcialmente compensado por economia em viagens.</div>
+      <div class="drivers">
+        <div class="drv" data-in="6.3" data-anim="fade"><div class="name">Serviços profissionais</div><div class="track"><div class="fill" data-in="6.4" data-anim="line" data-dur="0.9" style="width:100%;background:var(--amber)"></div></div><div class="val">+R$ 1,9 mi</div></div>
+        <div class="drv" data-in="6.7" data-anim="fade"><div class="name">Manutenção predial · SE</div><div class="track"><div class="fill" data-in="6.8" data-anim="line" data-dur="0.9" style="width:42%;background:var(--amber)"></div></div><div class="val">+R$ 0,8 mi</div></div>
+        <div class="drv" data-in="7.1" data-anim="fade"><div class="name">Viagens</div><div class="track"><div class="fill" data-in="7.2" data-anim="line" data-dur="0.9" style="width:31.5%;background:var(--teal)"></div></div><div class="val">−R$ 0,6 mi</div></div>
+      </div>
+    </div>
+    <div class="stats" data-in="7.6" data-anim="fade">
+      <div class="stat"><div class="v" id="st1">+7,4%</div><div class="l">VARIAÇÃO OPEX</div></div>
+      <div class="stat"><div class="v" id="st2">3</div><div class="l">DRIVERS PRINCIPAIS</div></div>
+      <div class="stat"><div class="v">Exemplo</div><div class="l">NÃO É BENCHMARK</div></div>
+    </div>
+  </div>
+  <div class="foot" data-in="1.2" data-anim="fade">Exemplo ilustrativo · os valores são fictícios</div>
+</div></section>
+
+<!-- S5 modules -->
+<section class="scene cream" id="s5"><div class="inner">
+  <div class="kicker" data-in="0.3">Produto</div>
+  <h2 class="serif" data-in="0.45">Três copilotos, cada um dentro do seu módulo</h2>
+  <div class="cards">
+    <div class="card" data-in="1.5"><div class="top" data-in="3.45" data-anim="line" data-dur="0.6"></div><div class="m">FCCS</div><div class="t">FCCS Copilot</div><div class="d">Consolidação e fechamento, explicados em tempo real.</div></div>
+    <div class="card" data-in="1.8"><div class="top" data-in="4.25" data-anim="line" data-dur="0.6"></div><div class="m">PLANNING</div><div class="t">Planning Copilot</div><div class="d">Orçamento, forecast e cenários em conversa, direto no cubo.</div></div>
+    <div class="card" data-in="2.1"><div class="top" data-in="5.0" data-anim="line" data-dur="0.6"></div><div class="m">PCM</div><div class="t">PCM Copilot</div><div class="d">Rentabilidade e rateio de custos, rastreados até o driver.</div></div>
+  </div>
+  <div class="native" data-in="2.6" data-anim="fade">Nativo no Oracle EPM — <b>FCCS · EPBCS · PCM · HFM</b></div>
+</div></section>
+
+<!-- S6 security -->
+<section class="scene crim" id="s6"><div class="inner">
+  <div class="kicker" data-in="0.3">Segurança e governança</div>
+  <h2 class="serif" data-in="0.45">Seus dados continuam sob o seu controle</h2>
+  <div class="items" data-in="0.3" data-anim="fade">
+    <div class="it" data-in="0.7"><svg viewBox="0 0 24 24" fill="none" stroke="#F2A71C" stroke-width="1.5"><path d="M12 3l8 3v6c0 4.5-3.2 8-8 9-4.8-1-8-4.5-8-9V6l8-3z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg><div class="t">Implantado no seu ambiente</div><div class="d">O agente roda dentro do ambiente do cliente, definido junto ao seu time de TI.</div></div>
+    <div class="it" data-in="2.6"><svg viewBox="0 0 24 24" fill="none" stroke="#F2A71C" stroke-width="1.5"><rect x="5" y="11" width="14" height="9"/><path d="M8 11V8a4 4 0 018 0v3"/></svg><div class="t">Respeita as permissões do EPM</div><div class="d">Ninguém vê o que não podia ver antes.</div></div>
+    <div class="it" data-in="4.5"><svg viewBox="0 0 24 24" fill="none" stroke="#F2A71C" stroke-width="1.5"><path d="M6 3h9l4 4v14H6z"/><path d="M9 11h7M9 14.5h7M9 18h4"/></svg><div class="t">Trilha de auditoria por consulta</div><div class="d">Cada pergunta e cada resposta ficam registradas, com usuário, data e dados consultados.</div></div>
+  </div>
+</div></section>
+
+<!-- S7 CTA -->
+<section class="scene cream" id="s7"><div class="inner" style="padding:0">
+  <img class="logo" src="assets/epmcopilot-logo.png" alt="" data-in="0.4" data-anim="fade">
+  <div class="chips" data-in="0.6" data-anim="fade">Oracle EPM · FCCS · Planning · PCM · Hyperion</div>
+  <div class="hero serif">
+    <div class="l1" data-in="0.5">Feche mais rápido.</div>
+    <div class="l2" data-in="2.1">Entenda cada variação<br>em segundos<u>.</u></div>
+  </div>
+  <div class="cta">
+    <div class="btn" data-in="4.8" data-anim="up">Solicitar demonstração</div>
+    <div class="url" data-in="5.4" data-anim="fade">epmcopilot.com</div>
+  </div>
+</div></section>
+
+</div>
+<script>
+const TL = { total: 54.5, scenes: [
+  {id:'s1', start:0}, {id:'s2', start:4.65}, {id:'s3', start:15.2}, {id:'s4', start:20.5},
+  {id:'s5', start:30.4}, {id:'s6', start:36.55}, {id:'s7', start:43.65}
+]};
+const clamp=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));
+const eo=x=>1-Math.pow(1-clamp(x),3);
+const eio=x=>{x=clamp(x);return x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2};
+
+// split typed elements into characters, keeping words unbroken
+document.querySelectorAll('[data-type]').forEach(el=>{
+  const text=el.textContent; el.textContent='';
+  text.split(' ').forEach((w,i,arr)=>{
+    const ws=document.createElement('span'); ws.style.whiteSpace='nowrap';
+    [...w].forEach(c=>{const s=document.createElement('span');s.className='ch';s.textContent=c;ws.appendChild(s)});
+    el.appendChild(ws);
+    if(i<arr.length-1){const sp=document.createElement('span');sp.className='ch';sp.textContent=' ';el.appendChild(sp)}
+  });
+  el._chars=[...el.querySelectorAll('.ch')];
+  const caret=document.createElement('span');caret.className='caret';el._caret=caret;
+});
+// split the answer into words (keeps <em>)
+(function(){
+  const ans=document.getElementById('ans'); const out=[];
+  ans.childNodes.forEach(n=>{
+    if(n.nodeType===3){ n.textContent.split(/(\s+)/).forEach(tok=>{ if(!tok) return; if(/^\s+$/.test(tok)) out.push(document.createTextNode(' ')); else {const s=document.createElement('span');s.className='w';s.textContent=tok;out.push(s)} }); }
+    else { n.classList.add('w'); out.push(n); }
+  });
+  ans.textContent=''; out.forEach(n=>ans.appendChild(n)); ans._w=[...ans.querySelectorAll('.w')];
+})();
+
+const scenes=TL.scenes.map((s,i)=>{
+  const el=document.getElementById(s.id);
+  el.style.zIndex=i+1;
+  return {el, start:s.start, end:(TL.scenes[i+1]?TL.scenes[i+1].start:TL.total)+0.9,
+          inner:el.querySelector('.inner'), items:[...el.querySelectorAll('[data-in]')], i};
+});
+
+function item(el, lt){
+  const a=+el.dataset.in, d=+(el.dataset.dur||0.75), kind=el.dataset.anim||'up';
+  if(el.hasAttribute('data-type')){
+    const n=Math.floor(clamp((lt-a)*(+el.dataset.cps),0,el._chars.length));
+    el._chars.forEach((c,i)=>c.style.opacity=i<n?1:0);
+    const car=el._caret; if(lt>=a-0.2){ const anchor=el._chars[Math.max(0,n-1)];
+      if(n===0) el.insertBefore(car, el.firstChild); else anchor.after(car);
+      const done=n>=el._chars.length; car.style.opacity = done ? (Math.floor((lt-a)*2)%2?0:1) : 1;
+    } else car.remove();
+    return;
+  }
+  const p=eo((lt-a)/d);
+  if(kind==='up'){el.style.opacity=p;el.style.transform=`translateY(${(1-p)*46}px)`}
+  else if(kind==='fade'){el.style.opacity=p}
+  else if(kind==='scale'){el.style.opacity=clamp((lt-a)/(d*.5));el.style.transform=`scale(${.88+.12*p})`}
+  else if(kind==='line'){el.style.transform=`scaleX(${p})`}
+}
+
+function render(t){
+  for(const s of scenes){
+    const on=t>=s.start && t<s.end;
+    s.el.style.display=on?'block':'none';
+    if(!on) continue;
+    const lt=t-s.start;
+    const w=eio(lt/0.75);
+    s.el.style.clipPath = s.i===0 ? 'none' : (s.i%2 ? `inset(${(1-w)*100}% 0 0 0)` : `inset(0 0 0 ${(1-w)*100}%)`);
+    const dur=s.end-s.start;
+    s.inner.style.transform=`scale(${1+0.022*clamp(lt/dur)})`;
+    s.items.forEach(el=>item(el,lt));
+    if(s.i===0){ // clock runs away
+      const k=clamp((lt-2.2)/2.2); const mins=Math.floor(Math.pow(k,1.6)*227);
+      document.getElementById('clock').textContent=String(Math.floor(mins/60)).padStart(2,'0')+':'+String(mins%60).padStart(2,'0');
+    }
+    if(s.i===3){
+      const ans=document.getElementById('ans'); const n=Math.floor(clamp((lt-4.4)*8.5,0,ans._w.length));
+      ans._w.forEach((x,i)=>x.style.opacity=i<n?1:0);
+      const hl=(id,from,to)=>{const e=document.getElementById(id);const k=clamp((lt-from)/.4)*(1-clamp((lt-to)/.4));
+        e.style.color=`rgba(246,244,239,${.5+.5*k})`; e.style.paddingLeft=(k*18)+'px'; e.style.borderLeft=`${k*4}px solid #F2A71C`};
+      hl('how1',-9,-8); hl('how2',0.9,4.0); hl('how3',4.1,99); hl('how4',-9,-8);
+      const c=eo((lt-7.6)/1.0);
+      document.getElementById('st1').textContent='+'+(7.4*c).toFixed(1).replace('.',',')+'%';
+      document.getElementById('st2').textContent=Math.round(3*c);
+    }
+  }
+}
+window.render=render; window.TL=TL;
+document.fonts.ready.then(()=>{window.READY=true; render(+(new URLSearchParams(location.search).get('t')||0))});
+</script>
+</body>
+</html>
